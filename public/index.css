@@ -1,0 +1,62 @@
+/* サンプル一覧のスタイル。配色と書体は各サンプル(国旗帳など)とそろえている */
+:root {
+  --panel: #d9dee2; --panel-2: #c7cdd2; --card: #eef1f3; --ink: #1d262d; --ink-soft: #55616b;
+  --key: #c8321e; --focus: #ffb000; --line: #aab3ba;
+  box-sizing: border-box;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --panel: #242b31; --panel-2: #2e363d; --card: #1b2126; --ink: #e6eaed; --ink-soft: #9aa6b0; --line: #3d4750;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --panel: #242b31; --panel-2: #2e363d; --card: #1b2126; --ink: #e6eaed; --ink-soft: #9aa6b0; --line: #3d4750;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--panel); color: var(--ink);
+  font-family: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  line-height: 1.7;
+}
+.wrap {
+  max-width: 1080px; margin: 0 auto;
+  padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+header h1 { font-size: clamp(2rem, 7vw, 3.2rem); font-weight: 900; line-height: 1.1; margin: 0 0 8px; text-wrap: balance; }
+header p { margin: 0 0 24px; color: var(--ink-soft); max-width: 38em; }
+.status { color: var(--ink-soft); }
+.status.error { color: var(--key); }
+
+.grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;
+  list-style: none; margin: 0; padding: 0;
+}
+.card {
+  display: grid; grid-template-rows: auto 1fr; height: 100%;
+  background: var(--card); border-radius: 14px; overflow: hidden;
+  color: inherit; text-decoration: none;
+  border: 2px solid transparent; transition: border-color .15s, transform .1s;
+}
+.card:hover { border-color: var(--key); }
+.card:active { transform: scale(.98); }
+.card:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+/* 見本の画像を最大4枚、2×2 で並べる */
+.thumbs {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  padding: 16px; background: var(--panel-2); aspect-ratio: 16 / 9; max-width: 100%;
+}
+.thumbs img {
+  width: 100%; height: 100%; object-fit: contain; display: block; min-height: 0;
+}
+.thumbs.one { grid-template-columns: 1fr; }
+.body { padding: 14px 16px 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.title { margin: 0; font-size: 1.15rem; font-weight: 900; line-height: 1.3; }
+.desc { margin: 0; color: var(--ink-soft); font-size: .9rem; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+.tags span { font-size: .72rem; padding: 1px 8px; border-radius: 999px; background: var(--panel-2); }
+footer { margin-top: 40px; color: var(--ink-soft); font-size: .85rem; }
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } }

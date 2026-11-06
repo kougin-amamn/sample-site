@@ -1,0 +1,9 @@
+[
+  {
+    "slug": "flags",
+    "title": "SVG 国旗帳",
+    "desc": "主要な国と地域の国旗を SVG で描き、地域ごとに並べた図鑑です。文字はパスに変換してあり、どの端末でも同じ形で表示されます。",
+    "tags": ["SVG", "JSON", "40 か国・地域"],
+    "thumbs": ["flags/svg/jp.svg", "flags/svg/br.svg", "flags/svg/gb.svg", "flags/svg/za.svg"]
+  }
+]

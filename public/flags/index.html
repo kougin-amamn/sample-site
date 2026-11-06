@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SVG 国旗帳</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="../">← サンプル一覧</a>
+    <h1>SVG 国旗帳</h1>
+    <p>主要な国と地域の国旗を、SVG の図形だけで描きました。どれも定められた縦横比で作ってあり、拡大しても線が荒れません。</p>
+  </header>
+
+  <nav class="filters" id="filters" aria-label="地域で絞り込む"></nav>
+  <p class="status" id="status" role="status">国旗を読み込んでいます…</p>
+  <div id="list"></div>
+
+  <footer>国旗はそれぞれ svg フォルダに 1 枚ずつ入っています。ブラジルとサウジアラビアの文字は、フォントの字形をパス（図形）に変換して描いているため、どの端末でも同じ形で表示されます。</footer>
+</div>
+<script src="js/script.js"></script>
+</body>
+</html>

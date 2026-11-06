@@ -1,0 +1,9 @@
+{
+  // Cloudflare Workers の設定。public フォルダをそのまま静的サイトとして公開する
+  "name": "sample-site",
+  "compatibility_date": "2026-11-06",
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "404-page"
+  }
+}
