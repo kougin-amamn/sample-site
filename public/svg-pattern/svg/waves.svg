@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <!-- 波 / 大きさ 60px・太さ 3・回転 0° -->
+  <defs>
+    <pattern id="pattern" width="60" height="30" patternUnits="userSpaceOnUse">
+      <path d="M-30 15Q-15 28.5 0 15T30 15T60 15T90 15" fill="none" stroke="#22406b" stroke-width="3" stroke-linecap="round"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="#eef1f3"/>
+  <rect width="100%" height="100%" fill="url(#pattern)"/>
+</svg>

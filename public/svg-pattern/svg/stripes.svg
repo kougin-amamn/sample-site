@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <!-- ストライプ / 大きさ 24px・太さ 10・回転 45° -->
+  <defs>
+    <pattern id="pattern" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="24" height="10" fill="#22406b"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="#eef1f3"/>
+  <rect width="100%" height="100%" fill="url(#pattern)"/>
+</svg>

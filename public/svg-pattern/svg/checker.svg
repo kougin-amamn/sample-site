@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <!-- 市松 / 大きさ 48px・太さ 1・回転 0° -->
+  <defs>
+    <pattern id="pattern" width="48" height="48" patternUnits="userSpaceOnUse">
+      <rect width="24" height="24" fill="#22406b"/><rect x="24" y="24" width="24" height="24" fill="#22406b"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="#eef1f3"/>
+  <rect width="100%" height="100%" fill="url(#pattern)"/>
+</svg>

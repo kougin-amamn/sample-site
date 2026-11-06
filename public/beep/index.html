@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ビープ音サンプル｜Web Audio API</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="../">← サンプル一覧</a>
+    <h1>ピッ。</h1>
+    <p>ブラウザだけでビープ音を鳴らすサンプルです。音声ファイルは使わず、JavaScript の Web Audio API で波形をその場で作っています。</p>
+  </header>
+
+  <div class="device">
+    <div class="screen">
+      <canvas id="scope" width="720" height="160" aria-label="波形の表示"></canvas>
+      <div class="readout" id="readout">1000 Hz / sine</div>
+    </div>
+    <div class="beep-row">
+      <button class="beep" id="beepBtn">鳴らす</button>
+      <p class="hint">スペースキーでも鳴らせます</p>
+    </div>
+  </div>
+
+  <section>
+    <h2>音を調整する</h2>
+    <div class="controls">
+      <div class="field">
+        <label for="freq">周波数 <output id="freqOut">1000 Hz</output></label>
+        <input type="range" id="freq" min="100" max="4000" step="10" value="1000">
+      </div>
+      <div class="field">
+        <label for="dur">長さ <output id="durOut">0.15 秒</output></label>
+        <input type="range" id="dur" min="0.03" max="1.5" step="0.01" value="0.15">
+      </div>
+      <div class="field">
+        <label for="vol">音量 <output id="volOut">30%</output></label>
+        <input type="range" id="vol" min="0" max="1" step="0.01" value="0.3">
+      </div>
+      <div class="field">
+        <label>波形</label>
+        <div class="waves" id="waves">
+          <button data-type="sine" aria-pressed="true">サイン波</button>
+          <button data-type="square" aria-pressed="false">矩形波</button>
+          <button data-type="triangle" aria-pressed="false">三角波</button>
+          <button data-type="sawtooth" aria-pressed="false">ノコギリ波</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>よくある電子音</h2>
+    <div class="presets" id="presets"></div>
+  </section>
+
+  <section>
+    <div class="copy-row">
+      <h2 style="margin:0">いまの設定のコード</h2>
+      <button id="copyBtn">コピー</button>
+    </div>
+    <pre><code id="code"></code></pre>
+  </section>
+
+  <footer>HTML・CSS・JavaScript だけで動きます。音量に注意して試してください。</footer>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>

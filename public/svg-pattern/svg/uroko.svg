@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <!-- 鱗 / 大きさ 40px・太さ 1・回転 0° -->
+  <defs>
+    <pattern id="pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+      <polygon points="20,0 0,20 40,20" fill="#22406b"/><polygon points="0,20 -20,40 20,40" fill="#22406b"/><polygon points="40,20 20,40 60,40" fill="#22406b"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="#eef1f3"/>
+  <rect width="100%" height="100%" fill="url(#pattern)"/>
+</svg>

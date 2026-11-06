@@ -30,5 +30,33 @@
       "canvas-effects/thumbs/lightning.jpg",
       "canvas-effects/thumbs/fireworks.jpg"
     ]
+  },
+  {
+    "slug": "beep",
+    "title": "ビープ音",
+    "desc": "音声ファイルを使わず、Web Audio API でビープ音をその場で作って鳴らすサンプルです。周波数・長さ・波形を変えて、よくある電子音も試せます。",
+    "tags": [
+      "Web Audio API",
+      "音"
+    ],
+    "thumbs": [
+      "beep/thumbs/device.jpg"
+    ]
+  },
+  {
+    "slug": "svg-pattern",
+    "title": "SVG 柄工房",
+    "desc": "ドットやストライプから青海波・七宝などの和柄まで、色や大きさを変えて SVG の柄を作れます。SVG・PNG・CSS で持ち帰れます。",
+    "tags": [
+      "SVG",
+      "和柄",
+      "10 種類"
+    ],
+    "thumbs": [
+      "svg-pattern/thumbs/seigaiha.jpg",
+      "svg-pattern/thumbs/shippo.jpg",
+      "svg-pattern/thumbs/uroko.jpg",
+      "svg-pattern/thumbs/dots.jpg"
+    ]
   }
 ]

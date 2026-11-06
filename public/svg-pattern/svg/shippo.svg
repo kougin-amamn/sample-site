@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600">
+  <!-- 七宝 / 大きさ 48px・太さ 5・回転 0° -->
+  <defs>
+    <pattern id="pattern" width="48" height="48" patternUnits="userSpaceOnUse">
+      <circle cx="0" cy="0" r="24" fill="none" stroke="#22406b" stroke-width="2"/><circle cx="48" cy="0" r="24" fill="none" stroke="#22406b" stroke-width="2"/><circle cx="0" cy="48" r="24" fill="none" stroke="#22406b" stroke-width="2"/><circle cx="48" cy="48" r="24" fill="none" stroke="#22406b" stroke-width="2"/><circle cx="24" cy="24" r="24" fill="none" stroke="#22406b" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="#eef1f3"/>
+  <rect width="100%" height="100%" fill="url(#pattern)"/>
+</svg>
