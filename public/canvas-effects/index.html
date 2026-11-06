@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Canvas エフェクト｜波・波紋・炎・雨・カミナリ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="back" href="../">← サンプル一覧</a>
+    <h1>Canvas の自然現象</h1>
+    <p>波・波紋・炎・雨・カミナリ・雪・花火を、&lt;canvas&gt; と JavaScript だけで描いています。画面に触れると反応するものもあります。</p>
+  </header>
+
+  <div class="chips" id="chips" role="tablist" aria-label="エフェクトの切り替え"></div>
+
+  <div class="stage">
+    <canvas id="stage"></canvas>
+    <p class="hint" id="hint"></p>
+  </div>
+
+  <div class="controls">
+    <label for="power">強さ <output id="powerOut">5</output></label>
+    <input type="range" id="power" min="1" max="10" step="1" value="5">
+    <button class="btn" id="pauseBtn">一時停止</button>
+  </div>
+
+  <section class="about">
+    <h2>しくみ</h2>
+    <p id="about"></p>
+    <p class="file">ファイル：<code id="file"></code></p>
+  </section>
+
+  <footer>1つのエフェクトは1つの JS ファイルで完結しています。js/effects/ にファイルを足して index.html で読み込めば、一覧に自動で並びます。</footer>
+</div>
+
+<!-- 土台 → 各エフェクト → 画面の動き の順に読み込む -->
+<script src="js/core.js"></script>
+<script src="js/effects/waves.js"></script>
+<script src="js/effects/ripple.js"></script>
+<script src="js/effects/fire.js"></script>
+<script src="js/effects/rain.js"></script>
+<script src="js/effects/lightning.js"></script>
+<script src="js/effects/snow.js"></script>
+<script src="js/effects/fireworks.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

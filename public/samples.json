@@ -3,7 +3,32 @@
     "slug": "flags",
     "title": "SVG 国旗帳",
     "desc": "主要な国と地域の国旗を SVG で描き、地域ごとに並べた図鑑です。文字はパスに変換してあり、どの端末でも同じ形で表示されます。",
-    "tags": ["SVG", "JSON", "40 か国・地域"],
-    "thumbs": ["flags/svg/jp.svg", "flags/svg/br.svg", "flags/svg/gb.svg", "flags/svg/za.svg"]
+    "tags": [
+      "SVG",
+      "JSON",
+      "40 か国・地域"
+    ],
+    "thumbs": [
+      "flags/svg/jp.svg",
+      "flags/svg/br.svg",
+      "flags/svg/gb.svg",
+      "flags/svg/za.svg"
+    ]
+  },
+  {
+    "slug": "canvas-effects",
+    "title": "Canvas の自然現象",
+    "desc": "波・波紋・炎・雨・カミナリ・雪・花火を canvas と JavaScript だけで描いたエフェクト集です。タップやなぞる操作に反応するものもあります。",
+    "tags": [
+      "Canvas",
+      "アニメーション",
+      "7 種類"
+    ],
+    "thumbs": [
+      "canvas-effects/thumbs/waves.jpg",
+      "canvas-effects/thumbs/fire.jpg",
+      "canvas-effects/thumbs/lightning.jpg",
+      "canvas-effects/thumbs/fireworks.jpg"
+    ]
   }
 ]
