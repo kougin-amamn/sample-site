@@ -114,6 +114,8 @@
       }
       return 'url(#w-' + key + ')';
     }
+    var P = window.YosegiPatterns[id],
+      inlay = [];
     var rot = Lay.each(id, size, W, H, function (p, ox, oy, rnd) {
       var pts = p.clip ? Lay.clipPoly(p.pts, p.clip) : p.pts;
       if (pts.length < 3) return;
@@ -131,10 +133,21 @@
           '" fill="' +
           patternOf(p.w, p.a, Math.floor(rnd(0) * 3)) +
           '"' +
-          (opt.seam && p.seam !== false ? '' : ' stroke="none"') +
+          (opt.seam && p.seam !== false && !P.inlay ? '' : ' stroke="none"') +
           '/>',
       );
+      if (P.inlay && p.seam !== false) inlay.push(d);
     });
+    /* はめ込みの細線は、木片を全部塗った後に別のグループで引く(隣の木片に半分隠されないように) */
+    var inlayG = inlay.length
+      ? '<g fill="none" stroke="' +
+        patternOf(P.inlay.w, 30, 0) +
+        '" stroke-width="' +
+        f(size * P.inlay.k) +
+        '"><path d="' +
+        inlay.join('') +
+        '"/></g>'
+      : '';
     defs.push(
       '<linearGradient id="gloss" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffaeb" stop-opacity=".2"/>' +
         '<stop offset=".35" stop-color="#fffaeb" stop-opacity=".03"/><stop offset=".6" stop-opacity="0"/>' +
@@ -157,6 +170,7 @@
       f(sw) +
       '" stroke-linejoin="round">' +
       body.join('') +
+      inlayG +
       '</g>' +
       (opt.gloss ? '<rect width="' + W + '" height="' + H + '" fill="url(#gloss)"/>' : '');
     return used;

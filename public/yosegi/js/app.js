@@ -39,7 +39,8 @@
       fills = {},
       used = {},
       ts = (0.42 * size) / 44,
-      TW = 384;
+      TW = 384,
+      inlays = [];
     function fillOf(role) {
       used[role] = true;
       if (!fills[role]) fills[role] = ctx.createPattern(tex[map[role]], 'repeat');
@@ -65,7 +66,8 @@
       ctx.fillStyle =
         tone > 0 ? 'rgba(255,244,220,' + tone * 0.16 + ')' : 'rgba(40,20,5,' + -tone * 0.2 + ')';
       ctx.fill(path);
-      if (opt.seam && p.seam !== false) {
+      if (P.inlay && p.seam !== false) inlays.push({ path: path, ox: ox, oy: oy });
+      else if (opt.seam && p.seam !== false) {
         ctx.strokeStyle = 'rgba(35,20,8,0.42)';
         ctx.lineWidth = Math.max(0.5, size / 70);
         ctx.lineJoin = 'round';
@@ -78,6 +80,20 @@
     ctx.translate(W / 2, H / 2);
     if (P.rot) ctx.rotate((P.rot * Math.PI) / 180);
     YosegiLayout.each(id, size, W, H, piece);
+    /* はめ込みの細線は、隣の木片に半分隠されないよう全部の木片を塗った後に引く */
+    if (inlays.length) {
+      var lf = fillOf(P.inlay.w);
+      lf.setTransform(new DOMMatrix().rotate(30).scale(ts));
+      ctx.strokeStyle = lf;
+      ctx.lineWidth = size * P.inlay.k;
+      ctx.lineJoin = 'miter';
+      inlays.forEach(function (q) {
+        ctx.save();
+        ctx.translate(q.ox, q.oy);
+        ctx.stroke(q.path);
+        ctx.restore();
+      });
+    }
     ctx.restore();
 
     if (opt.gloss) {

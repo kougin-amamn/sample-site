@@ -96,28 +96,41 @@
     },
   };
 
-  /* 卍を格子 (4,2)・(-2,4) に並べると腕と鉤がつながって紗綾型になる。線は間隔2の升目の上に太さ 2h で引き、
-     同じところを二度塗らないよう、各線分の端の角をどちらが受け持つか決めてある */
+  /* 卍を格子 (4,2)・(-2,4) に並べると腕と鉤がつながって紗綾型になる。線は間隔2の升目の上に太さ 2h で引く。
+     卍の中心は独立した小さな升にし、線分の端の角はどちらか一方が受け持つ(同じところを二度塗らない)。
+     最後に升目を ±30 度の菱形に押しつぶし(菱万字)、木片の輪郭に明るい木の細線(inlay)をはめ込む */
+  var SC = Math.cos(Math.PI / 6),
+    SS = Math.sin(Math.PI / 6);
+  function hishi(g, x, y) {
+    return [g * SC * (x + y), g * SS * (x - y)];
+  }
   P.sayagata = {
-    rot: 45,
-    bg: { w: 'w', a: 0 },
+    bg: { w: 'd', a: 30 },
+    inlay: { w: 'y', k: 0.07 },
     lattice: function (s) {
-      var g = s * 0.42;
-      return { a: [4 * g, 2 * g], b: [-2 * g, 4 * g] };
+      var g = s * 1.0;
+      return { a: hishi(g, 4, 2), b: hishi(g, -2, 4) };
     },
     cell: function (i, j, s) {
-      var g = s * 0.42,
-        h = 0.36;
+      var g = s * 1.0,
+        h = 0.27;
       function R(x0, y0, x1, y1, a) {
-        return { pts: rect(x0 * g, y0 * g, x1 * g, y1 * g), w: 'k', a: a };
+        return {
+          pts: rect(x0, y0, x1, y1).map(function (q) {
+            return hishi(g, q[0], q[1]);
+          }),
+          w: 'd',
+          a: a,
+        };
       }
       return [
-        R(-h, -h, 2 + h, h, 0),
-        R(2 - h, h, 2 + h, 2 - h, 90),
-        R(2 - h, 2 - h, 4 - h, 2 + h, 0),
-        R(-h, h, h, 2 + h, 90),
-        R(-2 + h, 2 - h, -h, 2 + h, 0),
-        R(-2 - h, 2 - h, -2 + h, 4 - h, 90),
+        R(-h, -h, h, h, 30),
+        R(h, -h, 2 + h, h, 30),
+        R(2 - h, h, 2 + h, 2 - h, -30),
+        R(2 - h, 2 - h, 4 - h, 2 + h, 30),
+        R(-h, h, h, 2 + h, -30),
+        R(-2 + h, 2 - h, -h, 2 + h, 30),
+        R(-2 - h, 2 - h, -2 + h, 4 - h, -30),
       ];
     },
   };
