@@ -13,24 +13,17 @@
     seamEl = document.getElementById('seam'),
     glossEl = document.getElementById('gloss'),
     legendEl = document.getElementById('legend'),
-    saveBtn = document.getElementById('save');
+    saveBtn = document.getElementById('save'),
+    svgEl = document.getElementById('stageSvg'),
+    modeEl = document.getElementById('mode');
 
   var woods = {},
     roles = {},
     presets = [],
     meta = [],
     tex = {},
-    state = { id: 'asanoha', size: 44, preset: 0, seam: true, gloss: true };
+    state = { id: 'asanoha', size: 44, preset: 0, seam: true, gloss: true, mode: 'canvas' };
 
-  /* 木片ごとに木目の位置と明るさを少しずらし、同じ板から切り出したように見えないようにする */
-  function hash(i, j, k) {
-    var h = Math.imul(i, 374761393) ^ Math.imul(j, 668265263) ^ Math.imul(k + 1, 2246822519);
-    h = Math.imul(h ^ (h >>> 13), 1274126177);
-    return function (n) {
-      var x = Math.imul(h ^ Math.imul(n + 7, 2654435761), 1597334677);
-      return (((x ^ (x >>> 15)) >>> 0) % 10000) / 10000;
-    };
-  }
   function pathOf(pts) {
     var p = new Path2D();
     p.moveTo(pts[0][0], pts[0][1]);
@@ -38,16 +31,6 @@
     p.closePath();
     return p;
   }
-  function centroid(pts) {
-    var x = 0,
-      y = 0;
-    pts.forEach(function (p) {
-      x += p[0];
-      y += p[1];
-    });
-    return [x / pts.length, y / pts.length];
-  }
-
   /* 模様を ctx に W×H(CSS px)で描き、使った木の役割を返す */
   function paint(ctx, W, H, id, size, opt) {
     var P = Pat[id],
@@ -63,7 +46,7 @@
     }
     function piece(p, ox, oy, rnd) {
       var path = pathOf(p.pts),
-        c = p.org || centroid(p.pts),
+        c = p.org || YosegiLayout.centroid(p.pts),
         f = fillOf(p.w);
       ctx.save();
       ctx.translate(ox, oy);
@@ -93,53 +76,7 @@
     ctx.save();
     ctx.translate(W / 2, H / 2);
     if (P.rot) ctx.rotate((P.rot * Math.PI) / 180);
-    /* 回転後の画面全体を覆う範囲(模様の座標)を求める */
-    var R = Math.hypot(W, H) / 2 + size * 3,
-      L = P.lattice(size),
-      det = L.a[0] * L.b[1] - L.a[1] * L.b[0],
-      imin = Infinity,
-      imax = -Infinity,
-      jmin = Infinity,
-      jmax = -Infinity;
-    [
-      [-R, -R],
-      [R, -R],
-      [R, R],
-      [-R, R],
-    ].forEach(function (q) {
-      var i = (q[0] * L.b[1] - q[1] * L.b[0]) / det,
-        j = (L.a[0] * q[1] - L.a[1] * q[0]) / det;
-      imin = Math.min(imin, i);
-      imax = Math.max(imax, i);
-      jmin = Math.min(jmin, j);
-      jmax = Math.max(jmax, j);
-    });
-    if (P.bg)
-      piece(
-        {
-          pts: [
-            [-R, -R],
-            [R, -R],
-            [R, R],
-            [-R, R],
-          ],
-          w: P.bg.w,
-          a: P.bg.a,
-          seam: false,
-        },
-        0,
-        0,
-        hash(0, 0, -9),
-      );
-    for (var j = Math.floor(jmin) - 1; j <= Math.ceil(jmax) + 1; j++)
-      for (var i = Math.floor(imin) - 1; i <= Math.ceil(imax) + 1; i++) {
-        var ox = i * L.a[0] + j * L.b[0],
-          oy = i * L.a[1] + j * L.b[1];
-        if (Math.abs(ox) > R + size * 3 || Math.abs(oy) > R + size * 3) continue;
-        P.cell(i, j, size).forEach(function (p, k) {
-          piece(p, ox, oy, hash(i, j, p.seed !== undefined ? 100 + p.seed : k));
-        });
-      }
+    YosegiLayout.each(id, size, W, H, piece);
     ctx.restore();
 
     if (opt.gloss) {
@@ -168,10 +105,35 @@
   }
 
   function draw() {
-    if (!stage.clientWidth) return;
-    var f = fit(stage),
+    var box = stage.parentNode,
+      used;
+    if (!box.clientWidth) return;
+    if (state.mode === 'svg') {
+      used = YosegiSVG.paint(
+        svgEl,
+        svgEl.clientWidth,
+        svgEl.clientHeight,
+        state.id,
+        state.size,
+        state,
+        woods,
+        presets[state.preset].map,
+      );
+    } else {
+      var f = fit(stage);
       used = paint(f.ctx, f.W, f.H, state.id, state.size, state);
+    }
     legend(used);
+  }
+  function setMode(m) {
+    state.mode = m;
+    stage.hidden = m === 'svg';
+    svgEl.toggleAttribute('hidden', m !== 'svg'); /* svg 要素には hidden プロパティが無いので属性で切り替える */
+    saveBtn.textContent = m === 'svg' ? 'SVG で保存' : 'PNG で保存';
+    Array.prototype.forEach.call(modeEl.children, function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.mode === m));
+    });
+    draw();
   }
 
   function legend(used) {
@@ -234,15 +196,25 @@
     });
   }
 
+  function download(blob, name) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    setTimeout(function () {
+      URL.revokeObjectURL(a.href);
+    }, 1000);
+  }
   function save() {
+    if (state.mode === 'svg') {
+      download(
+        new Blob([YosegiSVG.serialize(svgEl)], { type: 'image/svg+xml' }),
+        'yosegi-' + state.id + '.svg',
+      );
+      return;
+    }
     stage.toBlob(function (blob) {
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'yosegi-' + state.id + '.png';
-      a.click();
-      setTimeout(function () {
-        URL.revokeObjectURL(a.href);
-      }, 1000);
+      download(blob, 'yosegi-' + state.id + '.png');
     }, 'image/png');
   }
 
@@ -291,11 +263,15 @@
       draw();
     });
     saveBtn.addEventListener('click', save);
+    modeEl.addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (b) setMode(b.dataset.mode);
+    });
     var t;
     new ResizeObserver(function () {
       clearTimeout(t);
       t = setTimeout(draw, 60);
-    }).observe(stage);
+    }).observe(stage.parentNode);
   }
 
   Promise.all(

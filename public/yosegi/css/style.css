@@ -64,10 +64,11 @@ body {
 .view {
   position: relative;
 }
-#stage {
+#stage,
+.stage-svg {
   display: block;
   width: 100%;
-  height: calc(100vh - 136px);
+  height: calc(100vh - 176px);
   min-height: 360px;
   border-radius: 6px;
   box-shadow:
@@ -75,6 +76,26 @@ body {
     0 0 0 7px #3a2414,
     0 10px 30px rgba(40, 20, 5, 0.35);
   background: #d9c7a6;
+}
+.mode {
+  display: inline-flex;
+  margin-bottom: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.mode button {
+  padding: 6px 14px;
+  border: none;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.mode button[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--accent-fg);
 }
 .status {
   position: absolute;
@@ -214,7 +235,8 @@ body {
   .layout {
     grid-template-columns: 1fr;
   }
-  #stage {
+  #stage,
+  .stage-svg {
     height: 62vh;
   }
   .panel {

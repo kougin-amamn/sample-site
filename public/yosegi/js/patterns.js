@@ -423,32 +423,37 @@
     },
   };
 
-  /* 横の板を先に、縦の板を後に置き、左上と右下の交点だけ横の板を上に戻して編み目にする */
+  /* 細い帯・細い帯・太い帯をくり返す格子を、縦横の帯番号の和の偶奇で市松に塗る。太い升の四方を明るい長方形が囲み、
+     「井」の字が浮かぶ。帯3本 × 色2つの周期なので、1マスは帯6本分 */
   P.igeta = {
-    bg: { w: 'w', a: 0 },
     lattice: function (s) {
-      var S = s * 1.5;
-      return { a: [S, 0], b: [S / 2, S] };
+      var n = s * 0.55,
+        w = s * 1.1,
+        S = 2 * (2 * n + w);
+      return { a: [S, 0], b: [0, S] };
     },
     cell: function (i, j, s) {
-      var S = s * 1.5,
-        t = S * 0.13,
-        g = S * 0.17,
-        L = S * 0.8;
-      function H(y) {
-        return rect(-L / 2, y - t / 2, L / 2, y + t / 2);
-      }
-      function V(x) {
-        return rect(x - t / 2, -L / 2, x + t / 2, L / 2);
-      }
-      return [
-        { pts: H(-g), w: 'b', a: 0, seed: 1, org: [0, -g] },
-        { pts: H(g), w: 'b', a: 0, seed: 2, org: [0, g] },
-        { pts: V(-g), w: 'd', a: 90 },
-        { pts: V(g), w: 'd', a: 90 },
-        { pts: rect(-g - t / 2, -g - t / 2, -g + t / 2, -g + t / 2), w: 'b', a: 0, seed: 1, org: [0, -g] },
-        { pts: rect(g - t / 2, g - t / 2, g + t / 2, g + t / 2), w: 'b', a: 0, seed: 2, org: [0, g] },
-      ];
+      var n = s * 0.55,
+        w = s * 1.1,
+        widths = [w, n, n, w, n, n],
+        pos = [0],
+        out = [];
+      widths.forEach(function (x, k) {
+        pos.push(pos[k] + x);
+      });
+      for (var r = 0; r < 6; r++)
+        for (var c = 0; c < 6; c++) {
+          var x0 = pos[c],
+            x1 = pos[c + 1],
+            y0 = pos[r],
+            y1 = pos[r + 1];
+          out.push({
+            pts: rect(x0, y0, x1, y1),
+            w: (r + c) % 2 ? 'w' : 'b',
+            a: x1 - x0 > y1 - y0 + 0.01 ? 0 : 90,
+          });
+        }
+      return out;
     },
   };
 
