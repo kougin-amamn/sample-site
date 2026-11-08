@@ -7,6 +7,7 @@
     listEl = document.getElementById('patterns'),
     nameEl = document.getElementById('pname'),
     descEl = document.getElementById('pdesc'),
+    meanEl = document.getElementById('pmean'),
     sizeEl = document.getElementById('size'),
     sizeOut = document.getElementById('sizeOut'),
     presetEl = document.getElementById('preset'),
@@ -128,7 +129,10 @@
   function setMode(m) {
     state.mode = m;
     stage.hidden = m === 'svg';
-    svgEl.toggleAttribute('hidden', m !== 'svg'); /* svg 要素には hidden プロパティが無いので属性で切り替える */
+    svgEl.toggleAttribute(
+      'hidden',
+      m !== 'svg',
+    ); /* svg 要素には hidden プロパティが無いので属性で切り替える */
     saveBtn.textContent = m === 'svg' ? 'SVG で保存' : 'PNG で保存';
     Array.prototype.forEach.call(modeEl.children, function (b) {
       b.setAttribute('aria-pressed', String(b.dataset.mode === m));
@@ -165,6 +169,7 @@
     })[0];
     nameEl.textContent = m.name;
     descEl.textContent = m.desc;
+    meanEl.textContent = m.meaning || '';
     Array.prototype.forEach.call(listEl.children, function (b) {
       b.setAttribute('aria-pressed', String(b.dataset.id === id));
     });

@@ -243,3 +243,9 @@ body {
     max-height: none;
   }
 }
+.mean-head {
+  margin: 0 0 2px;
+}
+.mean {
+  min-height: 0;
+}
