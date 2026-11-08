@@ -58,5 +58,21 @@
       "svg-pattern/thumbs/uroko.jpg",
       "svg-pattern/thumbs/dots.jpg"
     ]
+  },
+  {
+    "slug": "yosegi",
+    "title": "寄木模様帳",
+    "desc": "箱根寄木細工の幾何学模様12種を、樹種ごとの色と木目つきで Canvas に描いています。配色や大きさを変えて PNG で保存できます。",
+    "tags": [
+      "Canvas",
+      "和柄",
+      "12 種類"
+    ],
+    "thumbs": [
+      "yosegi/thumbs/kikkou.jpg",
+      "yosegi/thumbs/asanoha.jpg",
+      "yosegi/thumbs/shippoyabane.jpg",
+      "yosegi/thumbs/sayagata.jpg"
+    ]
   }
 ]

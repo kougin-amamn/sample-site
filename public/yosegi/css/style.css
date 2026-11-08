@@ -1,0 +1,223 @@
+/* 寄木模様帳の見た目 */
+:root {
+  --bg: #f4ede2;
+  --panel: #fffaf2;
+  --text: #2b2118;
+  --sub: #7b6a58;
+  --line: #e3d6c3;
+  --accent: #7a4a2a;
+  --accent-fg: #fff8ee;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #1b1612;
+    --panel: #251e18;
+    --text: #f1e7da;
+    --sub: #b09d88;
+    --line: #3a2f26;
+    --accent: #c99268;
+    --accent-fg: #1b1612;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', serif;
+}
+.head {
+  padding: 18px 20px 10px;
+}
+.back {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--sub);
+  text-decoration: none;
+  font-size: 13px;
+}
+.back:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+.head h1 {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: 0.12em;
+}
+.head p {
+  margin: 4px 0 0;
+  color: var(--sub);
+  font-size: 13px;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 16px;
+  padding: 0 20px 20px;
+}
+.view {
+  position: relative;
+}
+#stage {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 136px);
+  min-height: 360px;
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 6px #5a3a22,
+    0 0 0 7px #3a2414,
+    0 10px 30px rgba(40, 20, 5, 0.35);
+  background: #d9c7a6;
+}
+.status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  font-size: 15px;
+  color: #5a3a22;
+}
+.status.error {
+  color: #b03030;
+  padding: 20px;
+}
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+}
+.panel h2 {
+  margin: 0;
+  font-size: 19px;
+}
+.panel h3 {
+  margin: 14px 0 6px;
+  font-size: 14px;
+}
+.desc {
+  margin: 4px 0 12px;
+  color: var(--sub);
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 3.2em;
+}
+.patterns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.pat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+.pat[aria-pressed='true'] {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.thumb {
+  width: 100%;
+  height: 56px;
+  border-radius: 4px;
+  display: block;
+}
+.controls {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 14px;
+}
+.row {
+  display: grid;
+  grid-template-columns: 4em 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+.row select {
+  grid-column: 2 / 4;
+  font: inherit;
+  padding: 4px;
+}
+.row output {
+  min-width: 2em;
+  text-align: right;
+}
+.check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.save {
+  padding: 9px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font: inherit;
+  cursor: pointer;
+}
+.legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.legend small {
+  display: block;
+  color: var(--sub);
+}
+.swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+.note {
+  margin: 12px 0 0;
+  color: var(--sub);
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+@media (max-width: 760px) {
+  .head,
+  .layout {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  #stage {
+    height: 62vh;
+  }
+  .panel {
+    max-height: none;
+  }
+}
