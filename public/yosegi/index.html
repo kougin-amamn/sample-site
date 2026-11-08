@@ -20,6 +20,18 @@
         </div>
         <canvas id="stage" aria-label="寄木の模様(Canvas)"></canvas>
         <svg id="stageSvg" class="stage-svg" role="img" aria-label="寄木の模様(SVG)" hidden></svg>
+        <details id="code" class="code">
+          <summary>コードを見る</summary>
+          <div class="code-bar">
+            <div id="codeTabs" class="mode" role="group" aria-label="表示するコード">
+              <button type="button" data-tab="shape" aria-pressed="true">模様の形</button>
+              <button type="button" data-tab="wood" aria-pressed="false">木目</button>
+            </div>
+            <code id="codeFile" class="code-file"></code>
+            <button id="codeCopy" type="button" class="code-copy">コピー</button>
+          </div>
+          <pre id="codeText" class="code-text"></pre>
+        </details>
         <p id="status" class="status">読み込んでいます…</p>
       </section>
       <aside class="panel">
@@ -53,6 +65,7 @@
     <script src="js/patterns.js"></script>
     <script src="js/layout.js"></script>
     <script src="js/svg.js"></script>
+    <script src="js/code-view.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>

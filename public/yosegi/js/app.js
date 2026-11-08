@@ -125,6 +125,7 @@
       used = paint(f.ctx, f.W, f.H, state.id, state.size, state);
     }
     legend(used);
+    YosegiCode.show(state.id, state.mode);
   }
   function setMode(m) {
     state.mode = m;
