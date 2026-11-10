@@ -117,6 +117,19 @@
     var P = window.YosegiPatterns[id],
       inlay = [];
     var rot = Lay.each(id, size, W, H, function (p, ox, oy, rnd) {
+      if (p.edge) {
+        inlay.push(
+          'M' +
+            f(p.edge[0][0] + ox) +
+            ' ' +
+            f(p.edge[0][1] + oy) +
+            'L' +
+            f(p.edge[1][0] + ox) +
+            ' ' +
+            f(p.edge[1][1] + oy),
+        );
+        return;
+      }
       var pts = p.clip ? Lay.clipPoly(p.pts, p.clip) : p.pts;
       if (pts.length < 3) return;
       var d =
@@ -142,7 +155,7 @@
     var inlayG = inlay.length
       ? '<g fill="none" stroke="' +
         patternOf(P.inlay.w, 30, 0) +
-        '" stroke-width="' +
+        '" stroke-linecap="square" stroke-width="' +
         f(size * P.inlay.k) +
         '"><path d="' +
         inlay.join('') +

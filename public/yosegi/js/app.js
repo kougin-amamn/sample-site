@@ -47,6 +47,13 @@
       return fills[role];
     }
     function piece(p, ox, oy, rnd) {
+      if (p.edge) {
+        var lp = new Path2D();
+        lp.moveTo(p.edge[0][0], p.edge[0][1]);
+        lp.lineTo(p.edge[1][0], p.edge[1][1]);
+        inlays.push({ path: lp, ox: ox, oy: oy });
+        return;
+      }
       var path = pathOf(p.pts),
         c = p.org || YosegiLayout.centroid(p.pts),
         f = fillOf(p.w);
@@ -86,7 +93,7 @@
       lf.setTransform(new DOMMatrix().rotate(30).scale(ts));
       ctx.strokeStyle = lf;
       ctx.lineWidth = size * P.inlay.k;
-      ctx.lineJoin = 'miter';
+      ctx.lineCap = 'square';
       inlays.forEach(function (q) {
         ctx.save();
         ctx.translate(q.ox, q.oy);

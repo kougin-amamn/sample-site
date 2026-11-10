@@ -59,7 +59,12 @@
           oy = i * L.a[1] + j * L.b[1];
         if (Math.abs(ox) > R + size * 3 || Math.abs(oy) > R + size * 3) continue;
         P.cell(i, j, size).forEach(function (p, k) {
-          cb(p, ox, oy, hash(i, j, p.seed !== undefined ? 100 + p.seed : k));
+          cb(
+            p,
+            ox,
+            oy,
+            p.global ? hash(0, 0, 100 + p.seed) : hash(i, j, p.seed !== undefined ? 100 + p.seed : k),
+          );
         });
       }
     return P.rot || 0;
