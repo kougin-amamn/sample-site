@@ -667,5 +667,37 @@
     },
   };
 
+  /* 矢絣。幅 w の縦の列を2本ずつ組み、上端を 45 度に切って「^」の矢羽根にする。4列で1周期(明・暗・暗・明)。
+     段の高さは 5w で、次の段は2列ずらして置くので色が入れ替わる(格子 (4w, 0)・(2w, 5w)) */
+  P.yagasuri = {
+    /* 列と段の境目に、元の柄の細い線の代わりに黒い木の細線をはめ込む */
+    inlay: { w: 'k', k: 0.05 },
+    lattice: function (s) {
+      var w = s * 0.5;
+      return { a: [4 * w, 0], b: [2 * w, 5 * w] };
+    },
+    cell: function (i, j, s) {
+      var w = s * 0.5,
+        H = 5 * w,
+        d = w;
+      function col(x, up, wood) {
+        /* up: 上端が右上がり(矢羽根の左半分) */
+        var y0 = up ? d : 0,
+          y1 = up ? 0 : d;
+        return {
+          pts: [
+            [x, y0],
+            [x + w, y1],
+            [x + w, H + y1],
+            [x, H + y0],
+          ],
+          w: wood,
+          a: 90,
+        };
+      }
+      return [col(0, true, 'h'), col(w, false, 'k'), col(2 * w, true, 'k'), col(3 * w, false, 'h')];
+    },
+  };
+
   window.YosegiPatterns = P;
 })();
