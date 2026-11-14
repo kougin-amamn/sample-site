@@ -18,6 +18,7 @@
     <nav class="toc" aria-label="目次">
       <a href="#psy">色の心理的効果</a>
       <a href="#wheel">色相環と補色</a>
+      <a href="#paint">絵の具の色の作り方</a>
       <a href="#vision">色覚の多様性</a>
       <a href="#aging">高齢者の見え方</a>
       <a href="#comp">補色の見え方</a>
@@ -70,6 +71,29 @@
           </table>
         </div>
         <p id="wheelSource" class="note"></p>
+      </section>
+
+      <section id="paint" class="sec" hidden>
+        <h2>絵の具の色の作り方</h2>
+        <p id="paintIntro"></p>
+        <h3>三原色</h3>
+        <div id="paintPrimaries" class="cards p-prims"></div>
+        <h3>混ぜてみる</h3>
+        <div id="pMixer" class="p-mixer">
+          <div id="pPaints" class="p-paints"></div>
+          <div class="p-out">
+            <div id="pResult" class="p-result"></div>
+            <div id="pBar" class="p-bar" aria-hidden="true"></div>
+            <button id="pReset" type="button" class="p-try">パレットを空にする</button>
+          </div>
+        </div>
+        <h3>よく使う色の作り方</h3>
+        <div id="paintRecipes" class="cards p-recipes"></div>
+        <h3>明るさ・鮮やかさの変え方</h3>
+        <div id="paintAdjust" class="cards"></div>
+        <h3>きれいに作るコツ</h3>
+        <div id="paintTips" class="cards"></div>
+        <p id="paintNote" class="note"></p>
       </section>
 
       <section id="vision" class="sec" hidden>
@@ -205,5 +229,6 @@
     <script src="js/sim.js"></script>
     <script src="js/app.js"></script>
     <script src="js/wheel.js"></script>
+    <script src="js/paint.js"></script>
   </body>
 </html>
