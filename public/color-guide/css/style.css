@@ -657,3 +657,26 @@ thead th {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* 補色の見え方 */
+.comp-table th {
+  white-space: nowrap;
+  font-size: 13px;
+}
+.comp-table td {
+  min-width: 92px;
+}
+.comp-table small {
+  font-size: 12px;
+}
+.comp-table small.warn {
+  color: var(--ng);
+  font-weight: 700;
+}
+.comp-table tbody tr {
+  cursor: pointer;
+}
+.comp-table tbody tr.on {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}

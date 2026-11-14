@@ -20,6 +20,7 @@
       <a href="#wheel">色相環と補色</a>
       <a href="#vision">色覚の多様性</a>
       <a href="#aging">高齢者の見え方</a>
+      <a href="#comp">補色の見え方</a>
       <a href="#sim">見え方シミュレーター</a>
       <a href="#contrast">コントラスト比</a>
       <a href="#tips">色に頼らない工夫</a>
@@ -44,16 +45,15 @@
             <h3>選んだ色と補色</h3>
             <div id="wPair" class="w-pair"></div>
             <p id="wPairNote" class="note"></p>
-            <h3>補色の見え方</h3>
-            <div id="wSims" class="w-sims"></div>
+            <p class="note"><a href="#comp">この補色の見え方 →</a></p>
           </div>
         </div>
         <h3>暖色系・寒色系・中性色</h3>
         <div id="wheelGroups" class="cards"></div>
         <h3>色相環から作る配色</h3>
         <div id="wSchemes" class="cards"></div>
-        <h3>補色とユニバーサルデザイン</h3>
-        <div id="wheelUd" class="cards"></div>
+        <h3>色相環の種類について</h3>
+        <div id="wheelKinds" class="cards"></div>
         <h3>24色の一覧</h3>
         <div class="table-wrap">
           <table class="w-table">
@@ -123,6 +123,26 @@
         <div id="agingGood" class="good"></div>
         <h3>配色のコツ</h3>
         <ul id="agingTips" class="tips"></ul>
+      </section>
+
+      <section id="comp" class="sec" hidden>
+        <h2>補色の見え方</h2>
+        <p id="compIntro"></p>
+        <h3 id="compSelTitle">選んだ補色の見え方</h3>
+        <div id="wSims" class="w-sims"></div>
+        <h3>補色12組の比較</h3>
+        <p class="note">
+          数字は2色の明るさの差(コントラスト比)です。一般色覚以外で 1.5 : 1
+          未満の組は、色みの差も伝わりにくく見分けにくいため赤字にしています(一般色覚は色みの違いで見分けられます)。行を押すと、色相環でその色を選びます。
+        </p>
+        <div class="table-wrap">
+          <table class="comp-table">
+            <thead id="compHead"></thead>
+            <tbody id="compBody"></tbody>
+          </table>
+        </div>
+        <h3>補色を使う時の工夫</h3>
+        <div id="compTips" class="cards"></div>
       </section>
 
       <section id="sim" class="sec" hidden>

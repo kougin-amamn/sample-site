@@ -148,7 +148,11 @@
       S.contrast(base.hex, comp.hex).toFixed(1) +
       ' : 1 です。';
 
-    /* 補色の組を各見え方で並べる */
+    /* 補色の見え方の章: 選んだ組を各見え方で並べる */
+    $('compSelTitle').textContent = '選んだ補色の見え方(' + base.name + ' ⇔ ' + comp.name + ')';
+    document.querySelectorAll('#compBody tr').forEach(function (tr, k) {
+      tr.classList.toggle('on', k === sel % 12);
+    });
     var sims = $('wSims');
     sims.textContent = '';
     S.TYPES.forEach(function (t) {
@@ -162,7 +166,11 @@
       l.style.background = x;
       rr.style.background = y;
       sw.append(l, rr);
-      card.append(el('b', '', t.name), sw, el('small', r < 1.5 ? 'warn' : '', r.toFixed(1) + ' : 1'));
+      card.append(
+        el('b', '', t.name),
+        sw,
+        el('small', r < 1.5 && t.id !== 'normal' ? 'warn' : '', r.toFixed(1) + ' : 1'),
+      );
       sims.appendChild(card);
     });
 
@@ -176,6 +184,53 @@
       });
       c.append(el('h4', '', s.title), row, el('p', '', s.desc));
       box.appendChild(c);
+    });
+  }
+
+  /* 補色の見え方の章: 補色12組 × 見え方の表 */
+  function swatch(a, b, r, normal) {
+    var td = el('td'),
+      sw = el('div', 'w-sw'),
+      x = el('span'),
+      y = el('span');
+    x.style.background = a;
+    y.style.background = b;
+    sw.append(x, y);
+    td.append(sw, el('small', r < 1.5 && !normal ? 'warn' : '', r.toFixed(1) + ' : 1'));
+    return td;
+  }
+  function compVision(v) {
+    $('compIntro').textContent = v.intro;
+    var hr = el('tr');
+    hr.appendChild(el('th', '', '補色の組'));
+    S.TYPES.forEach(function (t) {
+      hr.appendChild(el('th', '', t.name));
+    });
+    $('compHead').appendChild(hr);
+    for (var i = 0; i < 12; i++) {
+      var a = data.colors[i],
+        b = data.colors[i + 12],
+        tr = el('tr');
+      tr.appendChild(el('th', '', a.name + ' ⇔ ' + b.name));
+      S.TYPES.forEach(function (t) {
+        var x = S.simulate(a.hex, t.id),
+          y = S.simulate(b.hex, t.id);
+        tr.appendChild(swatch(x, y, S.contrast(x, y), t.id === 'normal'));
+      });
+      tr.addEventListener(
+        'click',
+        (function (n) {
+          return function () {
+            pick(n);
+          };
+        })(i),
+      );
+      $('compBody').appendChild(tr);
+    }
+    v.tips.forEach(function (g) {
+      var c = el('div', 'card');
+      c.append(el('h4', '', g.title), el('p', '', g.desc));
+      $('compTips').appendChild(c);
     });
   }
 
@@ -217,11 +272,10 @@
         c.append(el('h4', '', g.title), el('p', '', g.desc));
         $('wheelGroups').appendChild(c);
       });
-      d.ud.forEach(function (g) {
-        var c = el('div', 'card');
-        c.append(el('h4', '', g.title), el('p', '', g.desc));
-        $('wheelUd').appendChild(c);
-      });
+      var k = el('div', 'card');
+      k.append(el('h4', '', d.kinds.title), el('p', '', d.kinds.desc));
+      $('wheelKinds').appendChild(k);
+      compVision(d.vision);
       drawWheel();
       list();
       pick(0);
