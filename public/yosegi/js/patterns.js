@@ -591,5 +591,81 @@
     },
   };
 
+  /* 鱗六角。三角格子(辺 L)の頂点を中心に、まわりの6枚の三角形を黄色い六角形(上下2枚の板)、その外側の6枚を濃い三角(星の角)にする。
+     星は格子の辺3本おき((3L, 0)・(1.5L, 3L×√3/2))に並び、1周期18枚のうち残りの6枚が地の三角になる */
+  P.urokorokkaku = {
+    lattice: function (s) {
+      var L = s * 1.1;
+      return { a: [3 * L, 0], b: [1.5 * L, (3 * L * R3) / 2] };
+    },
+    cell: function (i, j, s) {
+      var L = s * 1.1,
+        h = (L * R3) / 2,
+        lat = this.lattice(s),
+        n = [],
+        out = [];
+      for (var k = 0; k < 6; k++) n.push([L * Math.cos((k * Math.PI) / 3), L * Math.sin((k * Math.PI) / 3)]);
+      /* 六角形は上下2枚の板。木目を揃えるため、どちらも中心を木目の原点にする */
+      out.push({
+        pts: [
+          [-L, 0],
+          [-L / 2, -h],
+          [L / 2, -h],
+          [L, 0],
+        ],
+        w: 'y',
+        a: 0,
+        org: [0, 0],
+        seed: 1,
+      });
+      out.push({
+        pts: [
+          [-L, 0],
+          [L, 0],
+          [L / 2, h],
+          [-L / 2, h],
+        ],
+        w: 'y',
+        a: 0,
+        org: [0, 0],
+        seed: 2,
+      });
+      for (k = 0; k < 6; k++) {
+        var p = n[k],
+          q = n[(k + 1) % 6];
+        out.push({ pts: [p, [p[0] + q[0], p[1] + q[1]], q], w: 'd', a: ang(p, q) });
+      }
+      /* 地の三角: この星にいちばん近い三角形のうち、六角形と星の角(重心までの距離が L/√3・2L/√3)以外 */
+      for (var a = -3; a <= 3; a++)
+        for (var b2 = -3; b2 <= 3; b2++) {
+          var P0 = [a * L + (b2 * L) / 2, b2 * h],
+            tris = [
+              [P0, [P0[0] + L, P0[1]], [P0[0] + L / 2, P0[1] + h]],
+              [
+                [P0[0] + L, P0[1]],
+                [P0[0] + 1.5 * L, P0[1] + h],
+                [P0[0] + L / 2, P0[1] + h],
+              ],
+            ];
+          tris.forEach(function (T) {
+            var c = [(T[0][0] + T[1][0] + T[2][0]) / 3, (T[0][1] + T[1][1] + T[2][1]) / 3],
+              d0 = Math.hypot(c[0], c[1]);
+            if (d0 < 1.3 * L) return;
+            for (var m = -1; m <= 1; m++)
+              for (var nn = -1; nn <= 1; nn++) {
+                if (!m && !nn) continue;
+                var sx = m * lat.a[0] + nn * lat.b[0],
+                  sy = m * lat.a[1] + nn * lat.b[1],
+                  d1 = Math.hypot(c[0] - sx, c[1] - sy);
+                /* 距離が同じ時は、向きで決まった側の星だけが受け持つ */
+                if (d1 < d0 - 1e-6 || (Math.abs(d1 - d0) < 1e-6 && (sy < 0 || (sy === 0 && sx < 0)))) return;
+              }
+            out.push({ pts: T, w: 'h', a: 0 });
+          });
+        }
+      return out;
+    },
+  };
+
   window.YosegiPatterns = P;
 })();
