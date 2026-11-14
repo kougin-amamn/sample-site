@@ -1,5 +1,5 @@
 /* 寄木の模様の形。各模様は格子(a, b のずらし)と、1マス分の木片(多角形・木の役割・木目の角度)を返す。依存なし
-   木の役割は w 白 / y 黄 / b 茶 / d こげ茶 / k 黒 / g 緑 / r 赤。実際の樹種は配色(woods.json)で決まる */
+   木の役割は w 白 / y 黄 / h 飴色 / b 茶 / d こげ茶 / k 黒 / g 緑 / r 赤。実際の樹種は配色(woods.json)で決まる */
 (function () {
   'use strict';
   var R3 = Math.sqrt(3);
@@ -522,6 +522,71 @@
             a: x1 - x0 > y1 - y0 + 0.01 ? 0 : 90,
           });
         }
+      return out;
+    },
+  };
+
+  /* からみ桝。45 度回した座標で、帯の幅 u の正方形の枠(桝・外寸 4u、内寸 2u)を置く。帯は 黒/明るい木に茶の細筋/黒 の3層。
+     枠の中の対角の2升は明るい木、残りの2升には左右から来る横の帯が枠の上を渡って入り、端で直角に曲がって枠へつながる。
+     右へ出た帯は u だけ上にずれた隣の枠の左の帯になり(格子 (5u,-u))、枠の上下は縦の帯でつなぐ(格子 (-u,5u)) */
+  P.karamimasu = {
+    rot: 45,
+    bg: { w: 'h', a: 0 },
+    lattice: function (s) {
+      var u = s * 0.9;
+      return { a: [5 * u, -u], b: [-u, 5 * u] };
+    },
+    cell: function (i, j, s) {
+      var u = s * 0.9,
+        /* 帯の3層を、さらに明るい木・茶の細筋・明るい木に分けた5層の境目(帯の幅に対する割合)と木 */
+        cuts = [0, 1 / 3, 0.45, 0.55, 2 / 3, 1],
+        woods = ['k', 'h', 'b', 'h', 'k'],
+        out = [];
+      function at(x0, y0, x, y) {
+        return [(x0 + x) * u, (y0 + y) * u];
+      }
+      /* 真っすぐな帯。(x0, y0) から幅 w・高さ h(u 単位)。horiz を省くと長い方を帯の向きにする */
+      function bar(x0, y0, w, h, horiz) {
+        if (horiz === undefined) horiz = w > h;
+        for (var k = 0; k < 5; k++) {
+          var a = cuts[k] * (horiz ? h : w),
+            b2 = cuts[k + 1] * (horiz ? h : w);
+          out.push({
+            pts: horiz
+              ? [at(x0, y0, 0, a), at(x0, y0, w, a), at(x0, y0, w, b2), at(x0, y0, 0, b2)]
+              : [at(x0, y0, a, 0), at(x0, y0, b2, 0), at(x0, y0, b2, h), at(x0, y0, a, h)],
+            w: woods[k],
+            a: horiz ? 0 : 90,
+          });
+        }
+      }
+      /* 1升の角。外側の角が fx, fy(0 か 1)の側にあり、層が L 字に曲がる。縦の腕と横の腕で木目の向きを変える */
+      function corner(x0, y0, fx, fy) {
+        function P2(x, y) {
+          return at(x0, y0, fx ? 1 - x : x, fy ? 1 - y : y);
+        }
+        for (var k = 0; k < 5; k++) {
+          var a = cuts[k],
+            b2 = cuts[k + 1];
+          out.push({ pts: [P2(a, a), P2(b2, b2), P2(b2, 1), P2(a, 1)], w: woods[k], a: 90 });
+          out.push({ pts: [P2(a, a), P2(1, a), P2(1, b2), P2(b2, b2)], w: woods[k], a: 0 });
+        }
+      }
+      corner(0, 0, 0, 0);
+      corner(3, 0, 1, 0);
+      corner(0, 3, 0, 1);
+      corner(3, 3, 1, 1);
+      bar(1, 0, 2, 1);
+      bar(1, 3, 2, 1);
+      bar(0, 1, 1, 2);
+      bar(3, 1, 1, 2);
+      out.push({ pts: [at(1, 1, 0, 0), at(1, 1, 1, 0), at(1, 1, 1, 1), at(1, 1, 0, 1)], w: 'h', a: 0 });
+      out.push({ pts: [at(2, 2, 0, 0), at(2, 2, 1, 0), at(2, 2, 1, 1), at(2, 2, 0, 1)], w: 'h', a: 0 });
+      bar(0, 2, 1, 1, true);
+      corner(1, 2, 1, 0);
+      bar(3, 1, 2, 1);
+      corner(2, 1, 0, 1);
+      bar(2, -1, 1, 1, false);
       return out;
     },
   };
