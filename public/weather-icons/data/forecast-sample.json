@@ -1,0 +1,9 @@
+[
+  { "day": "月", "date": "11/16", "icon": "sunny", "text": "晴れ", "hi": 18, "lo": 8, "pop": 0 },
+  { "day": "火", "date": "11/17", "icon": "sunny-partly-cloudy", "text": "晴れ時々くもり", "hi": 17, "lo": 9, "pop": 10 },
+  { "day": "水", "date": "11/18", "icon": "cloudy-then-rain", "text": "くもりのち雨", "hi": 15, "lo": 10, "pop": 70 },
+  { "day": "木", "date": "11/19", "icon": "rain", "text": "雨", "hi": 13, "lo": 9, "pop": 90 },
+  { "day": "金", "date": "11/20", "icon": "rain-then-sunny", "text": "雨のち晴れ", "hi": 16, "lo": 8, "pop": 50 },
+  { "day": "土", "date": "11/21", "icon": "cloudy", "text": "くもり", "hi": 14, "lo": 7, "pop": 30 },
+  { "day": "日", "date": "11/22", "icon": "snow", "text": "雪", "hi": 6, "lo": 1, "pop": 60 }
+]

@@ -91,5 +91,21 @@
       "ui-icons/thumbs/battery.svg",
       "ui-icons/thumbs/wifi.svg"
     ]
+  },
+  {
+    "slug": "weather-icons",
+    "title": "ユニバーサルデザイン 天気アイコン集",
+    "desc": "晴れ・雨・雪などの天気と、「時々」「のち」の組み合わせ、気温・湿度などの指標を、色に頼らず形で区別できるユニバーサルデザインの SVG アイコンにしました。週間予報の表示例つきです。",
+    "tags": [
+      "SVG",
+      "天気",
+      "25 個"
+    ],
+    "thumbs": [
+      "weather-icons/thumbs/sunny.svg",
+      "weather-icons/thumbs/rain.svg",
+      "weather-icons/thumbs/snow.svg",
+      "weather-icons/thumbs/thunder.svg"
+    ]
   }
 ]

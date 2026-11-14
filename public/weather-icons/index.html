@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ユニバーサルデザイン 天気アイコン集</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="head">
+      <a class="back" href="../">← サンプル一覧</a>
+      <h1>ユニバーサルデザイン 天気アイコン集</h1>
+      <p>
+        天気予報やアプリに使う、ユニバーサルデザインの天気アイコンです。色がなくても形だけで区別でき、文字と並べて使うことを前提に描いています。
+      </p>
+    </header>
+
+    <div class="tools">
+      <label class="search">
+        <span class="sr">アイコンを探す</span>
+        <input id="q" type="search" placeholder="名前で探す(例: 雨、のち、気温)" />
+      </label>
+      <div class="opts">
+        <label
+          >大きさ
+          <select id="size">
+            <option value="24">24px</option>
+            <option value="32" selected>32px</option>
+            <option value="48">48px</option>
+            <option value="64">64px</option>
+          </select>
+        </label>
+        <label
+          >線の太さ <input id="stroke" type="range" min="1" max="3" step="0.25" value="2" /><output
+            id="strokeOut"
+            >2</output
+          ></label
+        >
+        <label>色 <input id="color" type="color" value="#1f2a44" /></label>
+      </div>
+      <nav id="cats" class="cats" aria-label="分類"></nav>
+    </div>
+
+    <section class="rules" aria-labelledby="rulesH">
+      <h2 id="rulesH">表し方の約束</h2>
+      <ul>
+        <li><b>色に頼らない</b>晴れ・雨・雪は、色がなくても形で区別できます(雨は斜めの線、雪は丸い粒)。</li>
+        <li>
+          <b>雨は雨粒で表す</b>「傘＝雨」は国によって伝わらないことがあるため、雲から落ちる雨粒で描きます。
+        </li>
+        <li><b>時々</b>大きな主の天気の右下に、小さな別の天気を重ねます(例: 晴れ時々くもり)。</li>
+        <li><b>のち</b>左の天気から右の天気へ、間に矢印を置いて左から右へ読みます(例: くもりのち雨)。</li>
+        <li>
+          <b>文字を添える</b>アイコンだけに頼らず、「晴れ」「降水確率 30%」などの文字といっしょに表示します。
+        </li>
+      </ul>
+    </section>
+
+    <section class="example" aria-labelledby="exH">
+      <h2 id="exH">使い方の例(週間予報)</h2>
+      <ol id="week" class="week"></ol>
+    </section>
+
+    <main id="list" class="list" aria-live="polite">
+      <p id="status" class="status">読み込んでいます…</p>
+    </main>
+
+    <dialog id="detail" class="detail" aria-labelledby="dName">
+      <form method="dialog" class="detail-close"><button aria-label="閉じる">×</button></form>
+      <div class="detail-body">
+        <div class="previews">
+          <div id="dBig" class="pv pv-big"></div>
+          <div class="pv-row">
+            <div>
+              <div id="d16" class="pv"></div>
+              <small>16px</small>
+            </div>
+            <div>
+              <div id="d24" class="pv"></div>
+              <small>24px</small>
+            </div>
+            <div>
+              <div id="d48" class="pv"></div>
+              <small>48px</small>
+            </div>
+            <div class="pv-dark">
+              <div id="dDark" class="pv"></div>
+              <small>暗い背景</small>
+            </div>
+          </div>
+        </div>
+        <div class="info">
+          <p id="dCat" class="d-cat"></p>
+          <h2 id="dName"></h2>
+          <p id="dDesc"></p>
+          <p class="d-file">ファイル: <code id="dFile"></code></p>
+          <div class="d-btns">
+            <button id="dCopy" type="button">SVG をコピー</button>
+            <button id="dSave" type="button">ダウンロード</button>
+          </div>
+          <p class="note">
+            コピーとダウンロードには、今の線の太さが入ります。色は currentColor
+            のままなので、使う側の文字色で変わります。
+          </p>
+          <pre id="dCode" class="code"></pre>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>
