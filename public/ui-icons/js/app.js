@@ -1,4 +1,4 @@
-/* UI アイコン集の画面。data/icons.json の一覧を分類ごとに並べ、svg/*.svg を読み込んでページに埋め込む。
+/* ユニバーサルデザイン アイコン集の画面。data/icons.json の一覧を分類ごとに並べ、svg/*.svg を読み込んでページに埋め込む。
    埋め込むのは、色(currentColor)と線の太さを CSS で変えられるようにするため */
 (function () {
   'use strict';
