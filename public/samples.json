@@ -75,5 +75,21 @@
       "yosegi/thumbs/shippoyabane.jpg",
       "yosegi/thumbs/sayagata.jpg"
     ]
+  },
+  {
+    "slug": "ui-icons",
+    "title": "UI アイコン集",
+    "desc": "電源・電池・電波・再生などアプリの操作部品に使う SVG アイコンを、分類ごとに一覧にしました。名前や用途で探せて、大きさ・線の太さ・色を変えて SVG をコピー・保存できます。",
+    "tags": [
+      "SVG",
+      "ユニバーサルデザイン",
+      "101 個"
+    ],
+    "thumbs": [
+      "ui-icons/svg/power.svg",
+      "ui-icons/svg/signal-4.svg",
+      "ui-icons/svg/battery-charging.svg",
+      "ui-icons/svg/wifi.svg"
+    ]
   }
 ]
