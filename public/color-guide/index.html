@@ -17,6 +17,7 @@
 
     <nav class="toc" aria-label="目次">
       <a href="#psy">色の心理的効果</a>
+      <a href="#wheel">色相環と補色</a>
       <a href="#vision">色覚の多様性</a>
       <a href="#aging">高齢者の見え方</a>
       <a href="#sim">見え方シミュレーター</a>
@@ -32,6 +33,43 @@
         <p id="psyNote" class="note"></p>
         <div id="psyGeneral" class="general"></div>
         <div id="psyColors" class="psy-grid"></div>
+      </section>
+
+      <section id="wheel" class="sec" hidden>
+        <h2>色相環と補色</h2>
+        <p id="wheelIntro"></p>
+        <div class="w-layout">
+          <div id="wheelSvg" class="w-wheel"></div>
+          <div class="w-side">
+            <h3>選んだ色と補色</h3>
+            <div id="wPair" class="w-pair"></div>
+            <p id="wPairNote" class="note"></p>
+            <h3>補色の見え方</h3>
+            <div id="wSims" class="w-sims"></div>
+          </div>
+        </div>
+        <h3>暖色系・寒色系・中性色</h3>
+        <div id="wheelGroups" class="cards"></div>
+        <h3>色相環から作る配色</h3>
+        <div id="wSchemes" class="cards"></div>
+        <h3>補色とユニバーサルデザイン</h3>
+        <div id="wheelUd" class="cards"></div>
+        <h3>24色の一覧</h3>
+        <div class="table-wrap">
+          <table class="w-table">
+            <thead>
+              <tr>
+                <th>番号</th>
+                <th>色</th>
+                <th>名前</th>
+                <th>16進数</th>
+                <th>補色</th>
+              </tr>
+            </thead>
+            <tbody id="wList"></tbody>
+          </table>
+        </div>
+        <p id="wheelSource" class="note"></p>
       </section>
 
       <section id="vision" class="sec" hidden>
@@ -146,5 +184,6 @@
 
     <script src="js/sim.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/wheel.js"></script>
   </body>
 </html>
