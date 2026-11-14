@@ -62,7 +62,7 @@
   {
     "slug": "yosegi",
     "title": "寄木模様帳",
-    "desc": "箱根寄木細工の幾何学模様と柄15種を、樹種ごとの色と木目つきで描いています。Canvas 版と、木目を feTurbulence で作る SVG 版を切り替えられ、PNG・SVG で保存できます。",
+    "desc": "箱根寄木細工の幾何学模様15種を、樹種ごとの色と木目つきで描いています。Canvas 版と、木目を feTurbulence で作る SVG 版を切り替えられ、PNG・SVG で保存できます。",
     "tags": [
       "Canvas",
       "SVG",
