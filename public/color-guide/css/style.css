@@ -1,0 +1,526 @@
+/* 色のユニバーサルデザイン帳の見た目。文字と背景のコントラスト比は 7:1 前後を目安にしている */
+:root {
+  --bg: #fbfaf7;
+  --panel: #ffffff;
+  --text: #1c1d22;
+  --sub: #555a66;
+  --line: #e2e0da;
+  --accent: #1b3a6b;
+  --accent-fg: #ffffff;
+  --ok: #0b6b3a;
+  --ng: #b3261e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15171c;
+    --panel: #1e2128;
+    --text: #f0f1f4;
+    --sub: #b4b9c4;
+    --line: #333844;
+    --accent: #9cb8ff;
+    --accent-fg: #10131a;
+    --ok: #6fd69c;
+    --ng: #ff8a80;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    system-ui,
+    -apple-system,
+    'Hiragino Sans',
+    'Noto Sans JP',
+    sans-serif;
+  line-height: 1.7;
+}
+.head,
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.head {
+  padding-top: 18px;
+}
+.back {
+  color: var(--sub);
+  font-size: 13px;
+  text-decoration: none;
+}
+.back:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+.head h1 {
+  margin: 6px 0 2px;
+  font-size: 26px;
+}
+.head p {
+  margin: 0 0 10px;
+  color: var(--sub);
+}
+.toc {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 10px max(20px, calc((100vw - 1100px) / 2 + 20px));
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.toc a {
+  flex: none;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 14px;
+  text-decoration: none;
+}
+.toc a:hover,
+.toc a:focus-visible {
+  border-color: var(--accent);
+}
+.status {
+  color: var(--sub);
+}
+.sec {
+  scroll-margin-top: 64px;
+  padding: 26px 0 8px;
+  border-bottom: 1px solid var(--line);
+}
+.sec h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+.sec h3 {
+  margin: 22px 0 8px;
+  font-size: 17px;
+}
+.note {
+  color: var(--sub);
+  font-size: 14px;
+}
+.cards,
+.general {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.card {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+}
+.card h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+.card p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* 心理的効果 */
+.psy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.psy {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
+.psy-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 18px 16px 12px;
+}
+.psy-top.edge {
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+.psy-top h3 {
+  margin: 0;
+  font-size: 22px;
+}
+.psy-top code {
+  font-size: 12px;
+  opacity: 0.85;
+}
+.psy-body {
+  padding: 10px 16px 14px;
+  font-size: 14px;
+}
+.psy-body p {
+  margin: 0 0 6px;
+}
+.psy-body b {
+  display: block;
+  font-size: 12px;
+  color: var(--sub);
+}
+.tag {
+  display: inline-block;
+  margin: 2px 4px 2px 0;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+.pos .tag {
+  background: rgba(11, 107, 58, 0.12);
+}
+.neg .tag {
+  background: rgba(179, 38, 30, 0.12);
+}
+.care {
+  padding-top: 6px;
+  border-top: 1px dashed var(--line);
+  color: var(--sub);
+}
+
+/* 表 */
+.table-wrap {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  font-size: 14px;
+}
+caption {
+  caption-side: bottom;
+  padding-top: 6px;
+  color: var(--sub);
+  font-size: 12px;
+  text-align: left;
+}
+th,
+td {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+thead th {
+  background: var(--bg);
+  font-size: 13px;
+}
+.types tbody th {
+  white-space: nowrap;
+}
+
+/* 組み合わせの比較 */
+.pairs {
+  overflow-x: auto;
+}
+.pair {
+  display: grid;
+  grid-template-columns: 9em repeat(auto-fit, minmax(76px, 1fr));
+  align-items: center;
+  gap: 6px;
+  min-width: 560px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+#agingHard .pair {
+  min-width: 0;
+  grid-template-columns: 9em 1fr 1fr;
+}
+.pair.head {
+  color: var(--sub);
+  font-size: 12px;
+}
+.pl b {
+  display: block;
+}
+.pl small {
+  color: var(--sub);
+}
+.pc {
+  display: flex;
+  height: 34px;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+.pc i {
+  flex: 1;
+}
+
+/* 配色セット */
+.palette {
+  margin-bottom: 18px;
+}
+.palette h4 {
+  margin: 10px 0 0;
+  font-size: 16px;
+}
+.gname {
+  margin: 10px 0 4px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.pal-grid {
+  overflow-x: auto;
+}
+.pal-row {
+  display: grid;
+  grid-template-columns: 10em repeat(5, minmax(60px, 1fr));
+  gap: 4px;
+  min-width: 520px;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+.pal-row.head {
+  color: var(--sub);
+}
+.pn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.pal-row.head .pn {
+  border: none;
+  background: none;
+  cursor: default;
+}
+.pn b {
+  font-size: 13px;
+}
+.sw {
+  border-radius: 6px;
+  min-height: 34px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+.tips {
+  padding-left: 1.3em;
+}
+.tips li {
+  margin-bottom: 4px;
+}
+
+/* 高齢者: 見やすい組み合わせ */
+.good {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px;
+}
+.good-item {
+  display: grid;
+  gap: 2px;
+  padding: 14px;
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+.good-item span {
+  font-size: 20px;
+  font-weight: 700;
+}
+.good-item small {
+  opacity: 0.85;
+}
+
+/* シミュレーター */
+.seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 12px;
+}
+.seg button {
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.seg button[aria-checked='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-fg);
+}
+.seg button:focus-visible,
+.pn:focus-visible,
+#swap:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.demo {
+  padding: 14px;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #1c1d22;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+.demo figure {
+  margin: 0;
+}
+.demo figcaption {
+  margin-bottom: 6px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.demo svg {
+  width: 100%;
+  height: auto;
+}
+.status-demo {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.status-demo li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+}
+.mark {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 700;
+}
+.text-demo p {
+  margin: 0 0 4px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+/* コントラスト比 */
+.cc-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+}
+.cc-inputs label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cc-inputs input[type='color'] {
+  width: 44px;
+  height: 34px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+}
+#swap {
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.cc-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  margin: 10px 0;
+}
+.ratio {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+.ratio small {
+  font-size: 18px;
+  color: var(--sub);
+}
+.judge {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+}
+.judge .ok {
+  color: var(--ok);
+}
+.judge .ng {
+  color: var(--ng);
+}
+.cc-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.cc-card {
+  display: grid;
+  gap: 2px;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+.cc-card b {
+  font-size: 12px;
+}
+.cc-card span {
+  font-size: 20px;
+  font-weight: 700;
+}
+.cc-card small {
+  font-size: 12px;
+}
+@media (max-width: 640px) {
+  .head,
+  .main {
+    padding: 0 16px;
+  }
+  .head {
+    padding-top: 16px;
+  }
+  .toc {
+    padding: 10px 16px;
+  }
+}

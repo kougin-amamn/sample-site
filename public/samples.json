@@ -108,5 +108,21 @@
       "weather-icons/thumbs/snow.svg",
       "weather-icons/thumbs/thunder.svg"
     ]
+  },
+  {
+    "slug": "color-guide",
+    "title": "色のユニバーサルデザイン帳",
+    "desc": "色の心理的効果、色覚の多様性(P型・D型・T型など)と高齢者(白内障)の見え方、見やすい推奨配色をまとめました。見え方シミュレーターとコントラスト比チェックつきです。",
+    "tags": [
+      "色",
+      "ユニバーサルデザイン",
+      "シミュレーター"
+    ],
+    "thumbs": [
+      "color-guide/thumbs/wheel.svg",
+      "color-guide/thumbs/pair.svg",
+      "color-guide/thumbs/cud.svg",
+      "color-guide/thumbs/contrast.svg"
+    ]
   }
 ]

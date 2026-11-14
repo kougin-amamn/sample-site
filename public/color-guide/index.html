@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>色のユニバーサルデザイン帳</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="head">
+      <a class="back" href="../">← サンプル一覧</a>
+      <h1>色のユニバーサルデザイン帳</h1>
+      <p>
+        色が人に与える印象と、色覚の多様性・加齢による見え方の違いをまとめ、誰にでも見やすい色の選び方を調べられるようにしました。
+      </p>
+    </header>
+
+    <nav class="toc" aria-label="目次">
+      <a href="#psy">色の心理的効果</a>
+      <a href="#vision">色覚の多様性</a>
+      <a href="#aging">高齢者の見え方</a>
+      <a href="#sim">見え方シミュレーター</a>
+      <a href="#contrast">コントラスト比</a>
+      <a href="#tips">色に頼らない工夫</a>
+    </nav>
+
+    <main class="main">
+      <p id="status" class="status">読み込んでいます…</p>
+
+      <section id="psy" class="sec" hidden>
+        <h2>色の心理的効果</h2>
+        <p id="psyNote" class="note"></p>
+        <div id="psyGeneral" class="general"></div>
+        <div id="psyColors" class="psy-grid"></div>
+      </section>
+
+      <section id="vision" class="sec" hidden>
+        <h2>色覚の多様性</h2>
+        <p id="visionIntro"></p>
+        <div class="table-wrap">
+          <table class="types">
+            <thead>
+              <tr>
+                <th>型</th>
+                <th>しくみ</th>
+                <th>見え方</th>
+                <th>人数</th>
+              </tr>
+            </thead>
+            <tbody id="visionTypes"></tbody>
+          </table>
+        </div>
+        <h3>見分けにくい色の組み合わせ</h3>
+        <p class="note">
+          左右の2色が、それぞれの見え方でどう見えるかを計算で並べています。2色が近い色になる型ほど見分けにくい組み合わせです。
+        </p>
+        <div id="visionPairs" class="pairs"></div>
+        <h3>見やすい配色</h3>
+        <div id="palettes"></div>
+        <h3>配色のコツ</h3>
+        <ul id="visionTips" class="tips"></ul>
+      </section>
+
+      <section id="aging" class="sec" hidden>
+        <h2>高齢者(白内障など)の見え方</h2>
+        <p id="agingIntro"></p>
+        <div class="table-wrap">
+          <table class="stats">
+            <caption id="agingSource"></caption>
+            <thead>
+              <tr>
+                <th>年代</th>
+                <th>初期を含む白内障</th>
+                <th>かすみ・まぶしさが出る程度</th>
+              </tr>
+            </thead>
+            <tbody id="agingStats"></tbody>
+          </table>
+        </div>
+        <h3>年齢による見え方の変化</h3>
+        <div id="agingChanges" class="cards"></div>
+        <h3>見分けにくい色の組み合わせ</h3>
+        <div id="agingHard" class="pairs"></div>
+        <h3>見やすい組み合わせ</h3>
+        <div id="agingGood" class="good"></div>
+        <h3>配色のコツ</h3>
+        <ul id="agingTips" class="tips"></ul>
+      </section>
+
+      <section id="sim" class="sec" hidden>
+        <h2>見え方シミュレーター</h2>
+        <p class="note">
+          下の見本を、それぞれの見え方に近づけて表示します。画面の色の計算による目安で、実際の見え方には個人差があります。
+        </p>
+        <div id="simTypes" class="seg" role="radiogroup" aria-label="見え方"></div>
+        <div id="simDemo" class="demo"></div>
+      </section>
+
+      <section id="contrast" class="sec" hidden>
+        <h2>コントラスト比チェック</h2>
+        <p class="note">
+          文字と背景の明るさの差を、WCAG(ウェブのアクセシビリティの国際的な指針)のコントラスト比で調べます。
+        </p>
+        <div class="cc-inputs">
+          <label>文字の色 <input id="fg" type="color" value="#1b3a6b" /><code id="fgHex"></code></label>
+          <label>背景の色 <input id="bg" type="color" value="#ffffff" /><code id="bgHex"></code></label>
+          <button id="swap" type="button">入れ替える</button>
+        </div>
+        <div class="cc-result">
+          <p class="ratio"><span id="ratio"></span><small> : 1</small></p>
+          <ul id="judge" class="judge"></ul>
+        </div>
+        <div id="ccPreview" class="cc-preview"></div>
+      </section>
+
+      <section id="tips" class="sec" hidden>
+        <h2>色に頼らない工夫</h2>
+        <div class="cards">
+          <div class="card">
+            <h4>形を変える</h4>
+            <p>●▲■ のように印の形を変えると、色が分からなくても区別できます。</p>
+          </div>
+          <div class="card">
+            <h4>模様・線の種類</h4>
+            <p>グラフの棒に斜線や点の模様、線グラフに実線・点線を使い分けます。</p>
+          </div>
+          <div class="card">
+            <h4>文字を添える</h4>
+            <p>「良い」「注意」などの言葉や、凡例をグラフのすぐ横に書きます。</p>
+          </div>
+          <div class="card">
+            <h4>明るさの差</h4>
+            <p>同じような明るさの色を並べず、明るい色と暗い色を組み合わせます。</p>
+          </div>
+          <div class="card">
+            <h4>太く・大きく</h4>
+            <p>細い線や小さな文字の色は見分けにくいので、太さや大きさを十分にとります。</p>
+          </div>
+          <div class="card">
+            <h4>色名で呼ばない</h4>
+            <p>「赤いボタン」ではなく「削除ボタン」のように、役割の名前で案内します。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="js/sim.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
