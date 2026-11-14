@@ -479,3 +479,99 @@ body {
     display: block;
   }
 }
+
+/* カラー表示。部品の役割(class)ごとに色を付ける。currentColor で描いているので color を変えれば線と粒の色が変わる */
+:root {
+  --c-sun: #f59e0b;
+  --c-sun-fill: #fef3c7;
+  --c-cloud: #64748b;
+  --c-cloud-fill: #f1f5f9;
+  --c-rain: #2563eb;
+  --c-snow: #0ea5e9;
+  --c-bolt: #eab308;
+  --c-moon: #ca8a04;
+  --c-moon-fill: #fef9c3;
+  --c-wind: #0d9488;
+  --c-fog: #94a3b8;
+  --c-storm: #dc2626;
+  --c-temp: #dc2626;
+  --c-water: #0284c7;
+  --c-pollen: #65a30d;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-sun: #fbbf24;
+    --c-sun-fill: #78350f;
+    --c-cloud: #cbd5e1;
+    --c-cloud-fill: #334155;
+    --c-rain: #60a5fa;
+    --c-snow: #7dd3fc;
+    --c-bolt: #facc15;
+    --c-moon: #fde047;
+    --c-moon-fill: #713f12;
+    --c-wind: #2dd4bf;
+    --c-fog: #94a3b8;
+    --c-storm: #f87171;
+    --c-temp: #f87171;
+    --c-water: #38bdf8;
+    --c-pollen: #a3e635;
+  }
+}
+.color-mode .sun {
+  color: var(--c-sun);
+}
+.color-mode .sun circle {
+  fill: var(--c-sun-fill);
+}
+.color-mode .cloud {
+  color: var(--c-cloud);
+  fill: var(--c-cloud-fill);
+}
+.color-mode .rain {
+  color: var(--c-rain);
+}
+.color-mode .snow {
+  color: var(--c-snow);
+}
+.color-mode .bolt {
+  color: var(--c-bolt);
+}
+.color-mode .moon {
+  color: var(--c-moon);
+  fill: var(--c-moon-fill);
+}
+.color-mode .wind {
+  color: var(--c-wind);
+}
+.color-mode .fog {
+  color: var(--c-fog);
+}
+.color-mode .storm {
+  color: var(--c-storm);
+}
+.color-mode .temp {
+  color: var(--c-temp);
+}
+.color-mode .water {
+  color: var(--c-water);
+}
+.color-mode .pollen {
+  color: var(--c-pollen);
+}
+/* 暗い背景の見本は、明るい配色の時でも暗い背景用の色で見せる */
+.pv-dark {
+  --c-sun: #fbbf24;
+  --c-sun-fill: #78350f;
+  --c-cloud: #cbd5e1;
+  --c-cloud-fill: #334155;
+  --c-rain: #60a5fa;
+  --c-snow: #7dd3fc;
+  --c-bolt: #facc15;
+  --c-moon: #fde047;
+  --c-moon-fill: #713f12;
+  --c-wind: #2dd4bf;
+  --c-storm: #f87171;
+  --c-temp: #f87171;
+  --c-water: #38bdf8;
+  --c-pollen: #a3e635;
+}

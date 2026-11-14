@@ -11,6 +11,7 @@
     strokeEl = document.getElementById('stroke'),
     strokeOut = document.getElementById('strokeOut'),
     colorEl = document.getElementById('color'),
+    modeEl = document.getElementById('mode'),
     dlg = document.getElementById('detail'),
     root = document.documentElement,
     icons = [],
@@ -24,6 +25,7 @@
     root.style.setProperty('--size', sizeEl.value + 'px');
     root.style.setProperty('--stroke', strokeEl.value);
     root.style.setProperty('--icon', colorEl.value);
+    root.classList.toggle('color-mode', modeEl.value === 'color');
     strokeOut.textContent = strokeEl.value;
   }
 
@@ -109,7 +111,27 @@
 
   /* コピー・保存する SVG。今の線の太さを入れ、色は currentColor のまま残す */
   function exportText(ic) {
-    return svgText[ic.id].replace('stroke-width="2"', 'stroke-width="' + strokeEl.value + '"');
+    var t = svgText[ic.id].replace('stroke-width="2"', 'stroke-width="' + strokeEl.value + '"');
+    if (modeEl.value !== 'color') return t;
+    /* カラーの時は、今のページで計算された色を style に書き込み、ファイル単体でも同じ色で見えるようにする */
+    var holder = document.createElement('span');
+    holder.className = 'icon';
+    holder.style.cssText = 'position:absolute;left:-9999px';
+    holder.innerHTML = t;
+    document.body.appendChild(holder);
+    holder.querySelectorAll('[class]').forEach(function (el) {
+      var cs = getComputedStyle(el),
+        st = 'color:' + cs.color;
+      if (/^(cloud|moon)$/.test(el.getAttribute('class'))) st += ';fill:' + cs.fill;
+      if (el.getAttribute('class') === 'sun') {
+        var c = el.querySelector('circle');
+        if (c) c.setAttribute('style', 'fill:' + getComputedStyle(c).fill);
+      }
+      el.setAttribute('style', st);
+    });
+    var out = holder.firstElementChild.outerHTML;
+    holder.remove();
+    return out;
   }
 
   function open(ic) {
@@ -193,8 +215,12 @@
   }
 
   qEl.addEventListener('input', render);
-  [sizeEl, strokeEl, colorEl].forEach(function (el) {
+  [sizeEl, strokeEl, colorEl, modeEl].forEach(function (el) {
     el.addEventListener('input', applyVars);
+  });
+  modeEl.addEventListener('change', function () {
+    applyVars();
+    if (current && dlg.open) document.getElementById('dCode').textContent = exportText(current);
   });
   applyVars();
 
