@@ -22,10 +22,11 @@
       </label>
       <div class="opts">
         <label
-          >表示
-          <select id="mode">
-            <option value="color" selected>カラー</option>
-            <option value="mono">単色</option>
+          >セット
+          <select id="set">
+            <option value="tv" selected>カラー(テレビ風)</option>
+            <option value="flat">カラー(フラット)</option>
+            <option value="mono">モノトーン</option>
           </select>
         </label>
         <label
@@ -51,9 +52,13 @@
     <section class="rules" aria-labelledby="rulesH">
       <h2 id="rulesH">表し方の約束</h2>
       <ul>
-        <li><b>色に頼らない</b>晴れ・雨・雪は、色がなくても形で区別できます(雨は斜めの線、雪は丸い粒)。</li>
         <li>
-          <b>雨は雨粒で表す</b>「傘＝雨」は国によって伝わらないことがあるため、雲から落ちる雨粒で描きます。
+          <b>色に頼らない</b
+          >どのセットも、色がなくても形で区別できるように描いています(モノトーンが基本の形)。
+        </li>
+        <li>
+          <b>雨の表し方</b
+          >テレビ風は日本の天気予報でおなじみの傘、モノトーンとフラットは国を問わず伝わりやすい雨粒で表します。
         </li>
         <li><b>時々</b>大きな主の天気の右下に、小さな別の天気を重ねます(例: 晴れ時々くもり)。</li>
         <li><b>のち</b>左の天気から右の天気へ、間に矢印を置いて左から右へ読みます(例: くもりのち雨)。</li>
@@ -106,8 +111,8 @@
             <button id="dSave" type="button">ダウンロード</button>
           </div>
           <p class="note">
-            コピーとダウンロードには、今の線の太さが入ります。色は currentColor
-            のままなので、使う側の文字色で変わります。
+            コピーとダウンロードは、選んでいるセットのファイルです。モノトーンとフラットには今の線の太さが入り、モノトーンの色は
+            currentColor(使う側の文字色で変わる)です。
           </p>
           <pre id="dCode" class="code"></pre>
         </div>

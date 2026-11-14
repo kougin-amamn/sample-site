@@ -1,5 +1,6 @@
 /* ユニバーサルデザイン 天気アイコン集の画面。data/icons.json の一覧を分類ごとに並べ、svg/*.svg を読み込んでページに埋め込む。
    data/forecast-sample.json(架空の週間予報)で使い方の例も表示する。
+   アイコンはセットごとに別ファイル(svg/mono・svg/tv・svg/flat)で、選んだセットを初めて表示する時に読み込む。
    埋め込むのは、色(currentColor)と線の太さを CSS で変えられるようにするため */
 (function () {
   'use strict';
@@ -11,11 +12,12 @@
     strokeEl = document.getElementById('stroke'),
     strokeOut = document.getElementById('strokeOut'),
     colorEl = document.getElementById('color'),
-    modeEl = document.getElementById('mode'),
+    setEl = document.getElementById('set'),
     dlg = document.getElementById('detail'),
     root = document.documentElement,
     icons = [],
-    svgText = {},
+    svgCache = {},
+    days = [],
     current = null;
 
   /* 暗い配色の時は、最初のアイコンの色を明るくして背景に埋もれないようにする */
@@ -25,7 +27,9 @@
     root.style.setProperty('--size', sizeEl.value + 'px');
     root.style.setProperty('--stroke', strokeEl.value);
     root.style.setProperty('--icon', colorEl.value);
-    root.classList.toggle('color-mode', modeEl.value === 'color');
+    /* 色を選べるのはモノトーンだけ。テレビ風は線の太さを部品ごとに決めているので太さも変えない */
+    colorEl.disabled = setEl.value !== 'mono';
+    strokeEl.disabled = setEl.value === 'tv';
     strokeOut.textContent = strokeEl.value;
   }
 
@@ -33,7 +37,7 @@
     var span = document.createElement('span');
     span.className = 'icon';
     span.setAttribute('aria-hidden', 'true');
-    span.innerHTML = svgText[id];
+    span.innerHTML = svgCache[setEl.value][id];
     return span;
   }
 
@@ -109,29 +113,10 @@
     }
   }
 
-  /* コピー・保存する SVG。今の線の太さを入れ、色は currentColor のまま残す */
+  /* コピー・保存する SVG。モノトーンとフラットは今の線の太さを入れる。色はファイルに書いてあるとおり */
   function exportText(ic) {
-    var t = svgText[ic.id].replace('stroke-width="2"', 'stroke-width="' + strokeEl.value + '"');
-    if (modeEl.value !== 'color') return t;
-    /* カラーの時は、今のページで計算された色を style に書き込み、ファイル単体でも同じ色で見えるようにする */
-    var holder = document.createElement('span');
-    holder.className = 'icon';
-    holder.style.cssText = 'position:absolute;left:-9999px';
-    holder.innerHTML = t;
-    document.body.appendChild(holder);
-    holder.querySelectorAll('[class]').forEach(function (el) {
-      var cs = getComputedStyle(el),
-        st = 'color:' + cs.color;
-      if (/^(cloud|moon)$/.test(el.getAttribute('class'))) st += ';fill:' + cs.fill;
-      if (el.getAttribute('class') === 'sun') {
-        var c = el.querySelector('circle');
-        if (c) c.setAttribute('style', 'fill:' + getComputedStyle(c).fill);
-      }
-      el.setAttribute('style', st);
-    });
-    var out = holder.firstElementChild.outerHTML;
-    holder.remove();
-    return out;
+    var t = svgCache[setEl.value][ic.id];
+    return setEl.value === 'tv' ? t : t.replace('stroke-width="2"', 'stroke-width="' + strokeEl.value + '"');
   }
 
   function open(ic) {
@@ -139,7 +124,7 @@
     document.getElementById('dCat').textContent = ic.cat;
     document.getElementById('dName').textContent = ic.name;
     document.getElementById('dDesc').textContent = ic.desc;
-    document.getElementById('dFile').textContent = 'svg/' + ic.id + '.svg';
+    document.getElementById('dFile').textContent = 'svg/' + setEl.value + '/' + ic.id + '.svg';
     document.getElementById('dCode').textContent = exportText(ic);
     ['dBig', 'd16', 'd24', 'd48', 'dDark'].forEach(function (k) {
       var box = document.getElementById(k),
@@ -180,8 +165,9 @@
   });
 
   /* 週間予報の例。アイコンは飾りにして(aria-hidden)、天気は文字で読めるようにする */
-  function week(days) {
+  function week() {
     var ol = document.getElementById('week');
+    ol.textContent = '';
     days.forEach(function (d) {
       var li = document.createElement('li');
       li.innerHTML =
@@ -214,13 +200,35 @@
     });
   }
 
+  function loadSet(name) {
+    if (svgCache[name]) return Promise.resolve();
+    var box = {};
+    return Promise.all(
+      icons.map(function (ic) {
+        return fetch('svg/' + name + '/' + ic.id + '.svg')
+          .then(function (r) {
+            if (!r.ok) throw new Error(name + '/' + ic.id + '.svg HTTP ' + r.status);
+            return r.text();
+          })
+          .then(function (t) {
+            box[ic.id] = t.trim();
+          });
+      }),
+    ).then(function () {
+      svgCache[name] = box;
+    });
+  }
+
   qEl.addEventListener('input', render);
-  [sizeEl, strokeEl, colorEl, modeEl].forEach(function (el) {
+  [sizeEl, strokeEl, colorEl].forEach(function (el) {
     el.addEventListener('input', applyVars);
   });
-  modeEl.addEventListener('change', function () {
-    applyVars();
-    if (current && dlg.open) document.getElementById('dCode').textContent = exportText(current);
+  setEl.addEventListener('change', function () {
+    loadSet(setEl.value).then(function () {
+      applyVars();
+      render();
+      week();
+    });
   });
   applyVars();
 
@@ -231,28 +239,20 @@
     })
     .then(function (list) {
       icons = list;
-      return Promise.all(
-        list.map(function (ic) {
-          return fetch('svg/' + ic.id + '.svg')
-            .then(function (r) {
-              if (!r.ok) throw new Error(ic.id + '.svg HTTP ' + r.status);
-              return r.text();
-            })
-            .then(function (t) {
-              svgText[ic.id] = t.trim();
-            });
+      return Promise.all([
+        loadSet(setEl.value),
+        fetch('data/forecast-sample.json').then(function (r) {
+          if (!r.ok) throw new Error('forecast-sample.json HTTP ' + r.status);
+          return r.json();
         }),
-      );
+      ]);
     })
-    .then(function () {
+    .then(function (res) {
+      days = res[1];
       statusEl.remove();
       render();
-      return fetch('data/forecast-sample.json').then(function (r) {
-        if (!r.ok) throw new Error('forecast-sample.json HTTP ' + r.status);
-        return r.json();
-      });
+      week();
     })
-    .then(week)
     .catch(function (e) {
       statusEl.textContent =
         'アイコンを読み込めませんでした(https で配信したページで開いてください)。' + e.message;
