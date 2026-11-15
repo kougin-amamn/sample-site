@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>混色の基本</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="head">
+      <a class="back" href="../">← サンプル一覧</a>
+      <h1>混色の基本</h1>
+      <p>
+        絵の具を混ぜると、なぜその色になるのか。三原色と光の吸いこみ方から、ほしい色の作り方までをまとめました。
+      </p>
+    </header>
+
+    <nav class="toc" aria-label="目次">
+      <a href="#primary">三原色</a>
+      <a href="#light">光の吸いこみ</a>
+      <a href="#mixer">混ぜてみる</a>
+      <a href="#purple">紫をきれいに作る</a>
+      <a href="#recipes">よく使う色の作り方</a>
+      <a href="#adjust">明るさ・鮮やかさ</a>
+      <a href="#tips">きれいに作るコツ</a>
+    </nav>
+
+    <main class="main">
+      <p id="status" class="status">読み込んでいます…</p>
+
+      <section id="primary" class="sec" hidden>
+        <h2>三原色</h2>
+        <p id="paintIntro"></p>
+        <div id="paintPrimaries" class="cards p-prims"></div>
+      </section>
+
+      <section id="light" class="sec" hidden>
+        <h2>絵の具は光を吸いこむ</h2>
+        <p id="lightIntro"></p>
+        <div id="lightCards" class="cards l-cards"></div>
+      </section>
+
+      <section id="mixer" class="sec" hidden>
+        <h2>混ぜてみる</h2>
+        <p class="note">
+          「+」で絵の具を1杯ずつ足します。下の「混ぜてみる」ボタンからも、その分量で始められます。
+        </p>
+        <div id="pMixer" class="p-mixer">
+          <div id="pPaints" class="p-paints"></div>
+          <div class="p-out">
+            <div id="pResult" class="p-result"></div>
+            <div id="pBar" class="p-bar" aria-hidden="true"></div>
+            <button id="pReset" type="button" class="p-try">パレットを空にする</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="purple" class="sec" hidden>
+        <h2>紫をきれいに作る</h2>
+        <p id="purpleIntro"></p>
+        <h3>赤と青の種類で比べる</h3>
+        <div class="table-wrap">
+          <table id="purpleTable" class="pu-table"></table>
+        </div>
+        <h3>きれいに作るポイント</h3>
+        <div id="purplePoints" class="cards"></div>
+        <h3>混ぜる・重ねるの違い</h3>
+        <p id="glazeDesc" class="note"></p>
+        <div id="glazeBox" class="pu-glaze"></div>
+      </section>
+
+      <section id="recipes" class="sec" hidden>
+        <h2>よく使う色の作り方</h2>
+        <div id="paintRecipes" class="cards p-recipes"></div>
+      </section>
+
+      <section id="adjust" class="sec" hidden>
+        <h2>明るさ・鮮やかさの変え方</h2>
+        <div id="paintAdjust" class="cards"></div>
+      </section>
+
+      <section id="tips" class="sec" hidden>
+        <h2>きれいに作るコツ</h2>
+        <div id="paintTips" class="cards"></div>
+        <p id="paintNote" class="note"></p>
+      </section>
+    </main>
+
+    <script src="js/mix.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

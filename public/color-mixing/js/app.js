@@ -1,8 +1,8 @@
-/* 絵の具の色の作り方の章。data/paint.json の三原色・混色の例・調整の仕方を並べ、絵の具を混ぜる体験ができる。
-   文字色の選択とコントラスト比は sim.js(ColorSim)を使う */
+/* 混色の基本の画面。data/mixing.json の三原色・光の吸いこみ・紫の作り方・混色の例を並べ、絵の具を混ぜる体験ができる。
+   色の計算は mix.js(ColorMix)を使う */
 (function () {
   'use strict';
-  var S = window.ColorSim,
+  var M = window.ColorMix,
     NS = 'http://www.w3.org/2000/svg',
     $ = function (id) {
       return document.getElementById(id);
@@ -18,39 +18,10 @@
     return e;
   }
   function ink(bg) {
-    return S.contrast(bg, '#111111') >= S.contrast(bg, '#ffffff') ? '#111111' : '#ffffff';
+    return M.ink(bg);
   }
-  function lin(c) {
-    c /= 255;
-    return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
-  }
-  function srgb(v) {
-    return Math.round((v <= 0.0031308 ? v * 12.92 : 1.055 * Math.pow(v, 1 / 2.4) - 0.055) * 255);
-  }
-  /* 減法混色の目安: 光の強さ(リニア RGB)を量の割合でかけ合わせる(重み付きの幾何平均)。
-     0 があると何を混ぜても黒になるので、下限を 0.01 にしている */
   function mix(parts) {
-    var t = 0,
-      acc = [0, 0, 0];
-    Object.keys(parts).forEach(function (id) {
-      var n = parts[id],
-        h = paints[id].hex;
-      if (!n) return;
-      t += n;
-      [1, 3, 5].forEach(function (o, i) {
-        acc[i] += n * Math.log(Math.max(0.01, lin(parseInt(h.substr(o, 2), 16))));
-      });
-    });
-    if (!t) return null;
-    return (
-      '#' +
-      acc
-        .map(function (a) {
-          return ('0' + srgb(Math.exp(a / t)).toString(16)).slice(-2);
-        })
-        .join('')
-        .toUpperCase()
-    );
+    return M.mix(parts, paints);
   }
 
   function chip(hex, label, cls) {
@@ -123,7 +94,9 @@
       plus.onclick = function () {
         set(id, count[id] + 1);
       };
-      row.append(dot, el('span', 'p-name', p.name), minus, n, plus);
+      var nm = el('span', 'p-name', p.name);
+      if (p.kind) nm.appendChild(el('small', '', p.kind));
+      row.append(dot, nm, minus, n, plus);
       row.dataset.id = id;
       box.appendChild(row);
     });
@@ -179,6 +152,89 @@
     res.append(el('b', '', '混ぜた色'), el('code', '', hex), el('small', '', '全部で ' + total + ' 杯'));
   }
 
+  /* 光の吸いこみ: 赤・緑・青の光をはね返す量の棒 */
+  function light(d) {
+    $('lightIntro').textContent = d.intro;
+    d.ids.forEach(function (id) {
+      var p = paints[id],
+        c = el('div', 'card l-card'),
+        bars = el('div', 'l-bars');
+      M.reflect(p.hex).forEach(function (v, i) {
+        var b = el('div', 'l-bar'),
+          f = el('span');
+        f.style.height = Math.max(2, v * 100) + '%';
+        f.style.background = ['#E8323C', '#2EA84A', '#2F6BE0'][i];
+        b.append(f, el('small', '', ['赤', '緑', '青'][i]));
+        b.title = ['赤', '緑', '青'][i] + 'の光 ' + Math.round(v * 100) + '%';
+        bars.appendChild(b);
+      });
+      var head = el('div', 'l-head'),
+        dot = el('span', 'p-tube');
+      dot.style.background = p.hex;
+      head.append(dot, el('b', '', p.name));
+      if (p.kind) head.appendChild(el('small', '', p.kind));
+      c.append(head, bars);
+      $('lightCards').appendChild(c);
+    });
+  }
+
+  /* 紫をきれいに作る: 赤2種 × 青2種の表と、混ぜた色と重ねた色の比べ */
+  function purple(d) {
+    $('purpleIntro').textContent = d.intro;
+    var t = $('purpleTable'),
+      hr = el('tr');
+    hr.appendChild(el('th', '', ''));
+    d.cols.forEach(function (b) {
+      var th = el('th');
+      th.append(el('b', '', paints[b].name), el('small', '', '(' + paints[b].kind + ')'));
+      hr.appendChild(th);
+    });
+    t.appendChild(hr);
+    d.rows.forEach(function (r) {
+      var tr = el('tr'),
+        th = el('th');
+      th.append(el('b', '', paints[r].name), el('small', '', '(' + paints[r].kind + ')'));
+      tr.appendChild(th);
+      d.cols.forEach(function (b) {
+        var parts = {},
+          light2 = {},
+          td = el('td'),
+          pair = el('div', 'pu-pair');
+        parts[r] = 1;
+        parts[b] = 1;
+        light2[r] = 1;
+        light2[b] = 1;
+        light2.w = 2;
+        pair.append(chip(mix(parts), '1 : 1'), chip(mix(light2), '+ 白 2'));
+        var btn = el('button', 'p-try', '混ぜてみる');
+        btn.type = 'button';
+        btn.onclick = function () {
+          load(parts);
+          $('pMixer').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+        td.append(pair, btn);
+        tr.appendChild(td);
+      });
+      t.appendChild(tr);
+    });
+    d.points.forEach(function (g) {
+      var c = el('div', 'card');
+      c.append(el('h4', '', g.title), el('p', '', g.desc));
+      $('purplePoints').appendChild(c);
+    });
+    var a = paints[d.glaze.a],
+      b = paints[d.glaze.b],
+      parts = {};
+    parts[a.id] = 1;
+    parts[b.id] = 1;
+    parts.w = 2;
+    $('glazeDesc').textContent = d.glaze.desc;
+    $('glazeBox').append(
+      chip(mix(parts), 'パレットで混ぜる', 'big'),
+      chip(M.glaze(a.hex, b.hex), '薄く重ねる', 'big'),
+    );
+  }
+
   function build(d) {
     d.paints.forEach(function (p) {
       paints[p.id] = p;
@@ -232,16 +288,22 @@
       c.append(el('h4', '', t.title), el('p', '', t.desc));
       $('paintTips').appendChild(c);
     });
+    light(d.light);
+    purple(d.purple);
     mixer();
+    document.querySelectorAll('.sec').forEach(function (s) {
+      s.hidden = false;
+    });
+    $('status').remove();
   }
 
-  fetch('data/paint.json')
+  fetch('data/mixing.json')
     .then(function (r) {
-      if (!r.ok) throw new Error('paint.json HTTP ' + r.status);
+      if (!r.ok) throw new Error('mixing.json HTTP ' + r.status);
       return r.json();
     })
     .then(build)
     .catch(function (e) {
-      $('paintIntro').textContent = '絵の具の章を読み込めませんでした。' + e.message;
+      $('status').textContent = '読み込めませんでした(https で配信したページで開いてください)。' + e.message;
     });
 })();

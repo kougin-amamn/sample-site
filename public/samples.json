@@ -112,7 +112,7 @@
   {
     "slug": "color-guide",
     "title": "色のユニバーサルデザイン帳",
-    "desc": "色の心理的効果、色相環と補色、絵の具の色の作り方、色覚の多様性(P型・D型・T型など)と高齢者(白内障)の見え方、見やすい推奨配色をまとめました。見え方シミュレーターとコントラスト比チェックつきです。",
+    "desc": "色の心理的効果、色相環と補色、色覚の多様性(P型・D型・T型など)と高齢者(白内障)の見え方、見やすい推奨配色をまとめました。見え方シミュレーターとコントラスト比チェックつきです。",
     "tags": [
       "色",
       "ユニバーサルデザイン",
@@ -123,6 +123,22 @@
       "color-guide/thumbs/pair.svg",
       "color-guide/thumbs/cud.svg",
       "color-guide/thumbs/contrast.svg"
+    ]
+  },
+  {
+    "slug": "color-mixing",
+    "title": "混色の基本",
+    "desc": "絵の具の三原色と光の吸いこみ方から、ほしい色の作り方までをまとめました。混ぜてみる体験と、赤と青の種類で比べる紫の作り方つきです。",
+    "tags": [
+      "色",
+      "絵の具",
+      "混色"
+    ],
+    "thumbs": [
+      "color-mixing/thumbs/primaries.svg",
+      "color-mixing/thumbs/palette.svg",
+      "color-mixing/thumbs/purple.svg",
+      "color-mixing/thumbs/steps.svg"
     ]
   }
 ]
