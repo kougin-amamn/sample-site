@@ -399,3 +399,34 @@ thead th {
   gap: 10px;
   flex-wrap: wrap;
 }
+
+/* 混ぜた色の表示 */
+.p-near {
+  font-size: 22px;
+}
+.p-mixes {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+}
+.p-mixes li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.p-mixes code {
+  color: var(--sub);
+  font-size: 11px;
+}
+.p-dot.big {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+}
+.cards.p-prims {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr));
+}

@@ -74,7 +74,34 @@
     return contrast(bg, '#111111') >= contrast(bg, '#FFFFFF') ? '#111111' : '#FFFFFF';
   }
 
-  var api = { mix: mix, glaze: glaze, reflect: reflect, contrast: contrast, ink: ink };
+  /* 色の近さは CIE Lab の距離で測る(D65) */
+  function lab(hex) {
+    var l = reflect(hex),
+      x = (0.4124 * l[0] + 0.3576 * l[1] + 0.1805 * l[2]) / 0.95047,
+      y = 0.2126 * l[0] + 0.7152 * l[1] + 0.0722 * l[2],
+      z = (0.0193 * l[0] + 0.1192 * l[1] + 0.9505 * l[2]) / 1.08883;
+    var f = function (t) {
+      return t > 0.008856 ? Math.cbrt(t) : 7.787 * t + 16 / 116;
+    };
+    return [116 * f(y) - 16, 500 * (f(x) - f(y)), 200 * (f(y) - f(z))];
+  }
+  /* names: [{ name, hex }] のうち、いちばん近い色 */
+  function nearest(hex, names) {
+    var a = lab(hex),
+      best = null,
+      bd = Infinity;
+    names.forEach(function (n) {
+      var b = lab(n.hex),
+        d = Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+      if (d < bd) {
+        bd = d;
+        best = n;
+      }
+    });
+    return best;
+  }
+
+  var api = { nearest: nearest, mix: mix, glaze: glaze, reflect: reflect, contrast: contrast, ink: ink };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window !== 'undefined') window.ColorMix = api;
 })();

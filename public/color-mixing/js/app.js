@@ -7,7 +7,8 @@
     $ = function (id) {
       return document.getElementById(id);
     };
-  var paints = {},
+  var names = [],
+    paints = {},
     order = [],
     count = {};
 
@@ -149,7 +150,13 @@
     res.style.background = hex;
     res.style.color = ink(hex);
     res.textContent = '';
-    res.append(el('b', '', '混ぜた色'), el('code', '', hex), el('small', '', '全部で ' + total + ' 杯'));
+    var near = M.nearest(hex, names);
+    res.append(
+      el('b', '', '混ぜた色'),
+      el('strong', 'p-near', '「' + near.name + '」に近い色'),
+      el('code', '', hex),
+      el('small', '', '全部で ' + total + ' 杯'),
+    );
   }
 
   /* 光の吸いこみ: 赤・緑・青の光をはね返す量の棒 */
@@ -240,6 +247,12 @@
       paints[p.id] = p;
       order.push(p.id);
     });
+    /* 近い色の候補: 色名の一覧に、作り方の例で混ぜた色も加える(例と同じ分量なら例の名前が出る) */
+    names = d.names.concat(
+      d.recipes.map(function (r) {
+        return { name: r.name, hex: mix(r.parts) };
+      }),
+    );
     $('paintIntro').textContent = d.intro;
     $('paintNote').textContent = d.note;
 
@@ -251,7 +264,39 @@
         d2.style.background = p.colors[i];
         lab.append(d2, el('span', '', l));
       });
-      c.append(el('h4', '', p.title), venn(p), lab, el('p', '', p.desc));
+      /* 重なった所の色。図と同じ重ね方(絵の具は掛け算、光は足し算)で求める */
+      var mixes = el('ul', 'p-mixes');
+      p.mixes.forEach(function (m) {
+        var li = el('li'),
+          rgb = p.mode === 'add' ? [0, 0, 0] : [255, 255, 255];
+        m.of.forEach(function (i) {
+          var c2 = [1, 3, 5].map(function (o) {
+            return parseInt(p.colors[i].substr(o, 2), 16);
+          });
+          rgb = rgb.map(function (v, k) {
+            return p.mode === 'add' ? 255 - ((255 - v) * (255 - c2[k])) / 255 : (v * c2[k]) / 255;
+          });
+        });
+        var hex =
+          '#' +
+          rgb
+            .map(function (v) {
+              return ('0' + Math.round(v).toString(16)).slice(-2);
+            })
+            .join('')
+            .toUpperCase();
+        m.of.forEach(function (i, n) {
+          if (n) li.appendChild(el('span', 'p-op', '+'));
+          var dd = el('span', 'p-dot');
+          dd.style.background = p.colors[i];
+          li.append(dd, el('span', '', p.labels[i]));
+        });
+        var out = el('span', 'p-dot big');
+        out.style.background = hex;
+        li.append(el('span', 'p-op', '='), out, el('b', '', m.name), el('code', '', hex));
+        mixes.appendChild(li);
+      });
+      c.append(el('h4', '', p.title), venn(p), lab, mixes, el('p', '', p.desc));
       $('paintPrimaries').appendChild(c);
     });
 
