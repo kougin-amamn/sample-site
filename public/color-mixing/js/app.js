@@ -309,7 +309,12 @@
         load(r.parts);
         $('pMixer').scrollIntoView({ behavior: 'smooth', block: 'center' });
       };
-      c.append(chip(hex, r.name, 'big'), formula(r.parts), el('p', '', r.tip), btn);
+      var f = formula(r.parts),
+        res = el('span', 'p-dot big');
+      res.style.background = hex;
+      res.title = hex;
+      f.append(el('span', 'p-op', '='), res, el('b', '', r.name));
+      c.append(chip(hex, r.name, 'big'), f, el('p', '', r.tip), btn);
       $('paintRecipes').appendChild(c);
     });
 
