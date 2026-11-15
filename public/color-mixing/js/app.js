@@ -242,6 +242,104 @@
     );
   }
 
+  /* 光を重ねてみる: 赤・緑・青の光の強さ(0〜100%)を足し合わせる */
+  var lm = { r: 100, g: 100, b: 0 };
+  function lightMixer(d) {
+    $('lmIntro').textContent = d.intro;
+    $('lmNote').textContent = d.note;
+    var s = document.createElementNS(NS, 'svg');
+    s.setAttribute('viewBox', '0 0 220 200');
+    s.setAttribute('role', 'img');
+    s.setAttribute('aria-label', '赤・緑・青の光の重なり');
+    var bg = document.createElementNS(NS, 'rect');
+    bg.setAttribute('width', 220);
+    bg.setAttribute('height', 200);
+    bg.setAttribute('rx', 12);
+    bg.setAttribute('fill', '#000000');
+    var g = document.createElementNS(NS, 'g');
+    g.setAttribute('style', 'isolation:isolate');
+    var circles = [
+      [82, 78],
+      [138, 78],
+      [110, 126],
+    ].map(function (c) {
+      var e = document.createElementNS(NS, 'circle');
+      e.setAttribute('cx', c[0]);
+      e.setAttribute('cy', c[1]);
+      e.setAttribute('r', 52);
+      e.setAttribute('style', 'mix-blend-mode:screen');
+      g.appendChild(e);
+      return e;
+    });
+    s.append(bg, g);
+    $('lmVenn').appendChild(s);
+
+    var CH = [
+      { k: 'r', name: '赤(R)', col: '#E8323C' },
+      { k: 'g', name: '緑(G)', col: '#2EA84A' },
+      { k: 'b', name: '青(B)', col: '#2F6BE0' },
+    ];
+    var inputs = {};
+    CH.forEach(function (c) {
+      var row = el('label', 'lm-row'),
+        dot = el('span', 'p-dot'),
+        input = el('input'),
+        out = el('output', 'lm-val');
+      dot.style.background = c.col;
+      input.type = 'range';
+      input.min = 0;
+      input.max = 100;
+      input.style.accentColor = c.col;
+      input.oninput = function () {
+        lm[c.k] = +input.value;
+        draw();
+      };
+      inputs[c.k] = { input: input, out: out };
+      row.append(dot, el('span', 'lm-name', c.name), input, out);
+      $('lmSliders').appendChild(row);
+    });
+
+    function hexOf(v) {
+      return ('0' + Math.round((v / 100) * 255).toString(16)).slice(-2).toUpperCase();
+    }
+    function draw() {
+      var hx = { r: hexOf(lm.r), g: hexOf(lm.g), b: hexOf(lm.b) };
+      circles[0].setAttribute('fill', '#' + hx.r + '0000');
+      circles[1].setAttribute('fill', '#00' + hx.g + '00');
+      circles[2].setAttribute('fill', '#0000' + hx.b);
+      CH.forEach(function (c) {
+        inputs[c.k].input.value = lm[c.k];
+        inputs[c.k].out.textContent = lm[c.k] + '%';
+      });
+      var hex = '#' + hx.r + hx.g + hx.b,
+        res = $('lmResult'),
+        near = M.nearest(hex, names);
+      res.style.background = hex;
+      res.style.color = ink(hex);
+      res.textContent = '';
+      res.append(
+        el('b', '', '重ねた光の色'),
+        el('strong', 'p-near', '「' + near.name + '」に近い色'),
+        el('code', '', hex),
+        el('small', '', '赤 ' + lm.r + '% + 緑 ' + lm.g + '% + 青 ' + lm.b + '%'),
+      );
+    }
+
+    d.presets.forEach(function (p) {
+      var b = el('button', 'lm-preset'),
+        sw = el('span', 'p-dot big');
+      b.type = 'button';
+      sw.style.background = '#' + hexOf(p.r) + hexOf(p.g) + hexOf(p.b);
+      b.append(sw, el('b', '', p.name), el('small', '', 'R' + p.r + ' G' + p.g + ' B' + p.b));
+      b.onclick = function () {
+        lm = { r: p.r, g: p.g, b: p.b };
+        draw();
+      };
+      $('lmPresets').appendChild(b);
+    });
+    draw();
+  }
+
   function build(d) {
     d.paints.forEach(function (p) {
       paints[p.id] = p;
@@ -340,6 +438,7 @@
     });
     light(d.light);
     purple(d.purple);
+    lightMixer(d.lightmix);
     mixer();
     document.querySelectorAll('.sec').forEach(function (s) {
       s.hidden = false;
