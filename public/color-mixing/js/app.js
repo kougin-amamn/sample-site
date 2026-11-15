@@ -398,20 +398,29 @@
         b.setAttribute('aria-pressed', j === i);
       });
     }
+    var head = document.createElement('tr');
+    ['記号', '金属', '炎の色', '花火での色', '身近な例'].forEach(function (h) {
+      head.appendChild(el('th', '', h));
+    });
+    $('flTable').appendChild(head);
     d.items.forEach(function (it, i) {
-      var b = el('button', 'fl-btn');
+      var tr = document.createElement('tr'),
+        b = el('button', 'fl-btn'),
+        td = el('td'),
+        col = el('td', 'fl-colcell'),
+        sw = el('span', 'p-dot');
       b.type = 'button';
-      b.append(
-        flameSvg(it.hex, 'flG' + i, 34),
-        el('b', '', it.sym),
-        el('span', '', it.name),
-        el('small', '', it.color),
-      );
+      b.setAttribute('aria-label', it.name + 'の炎を見る');
+      b.append(flameSvg(it.hex, 'flG' + i, 22), el('b', '', it.sym));
       b.onclick = function () {
         show(i);
       };
       btns.push(b);
-      $('flList').appendChild(b);
+      td.appendChild(b);
+      sw.style.background = it.hex;
+      col.append(sw, it.color);
+      tr.append(td, el('td', '', it.name), col, el('td', '', it.firework), el('td', '', it.near || '—'));
+      $('flTable').appendChild(tr);
     });
     show(0);
 
@@ -537,6 +546,7 @@
     purple(d.purple);
     lightMixer(d.lightmix);
     flame(d.flame);
+    if (window.Hanabi) Hanabi.init(d.hanabi, d.flame);
     mixer();
     document.querySelectorAll('.sec').forEach(function (s) {
       s.hidden = false;
