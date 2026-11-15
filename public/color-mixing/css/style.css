@@ -493,3 +493,79 @@ thead th {
   color: var(--sub);
   font-size: 11px;
 }
+
+/* 炎色反応 */
+.fl-view {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #14161c;
+  color: #f2f2f2;
+}
+.fl-big {
+  flex: none;
+}
+.fl-big svg {
+  display: block;
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.25));
+}
+.fl-info h3 {
+  margin: 2px 0 4px;
+}
+.fl-info p {
+  margin: 4px 0;
+}
+.fl-info code {
+  font-size: 12px;
+  opacity: 0.8;
+}
+.fl-sym {
+  font-size: 28px;
+}
+.fl-col {
+  font-weight: 700;
+}
+.fl-hint {
+  color: var(--sub);
+  font-size: 13px;
+}
+.fl-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.fl-btn {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 8px 4px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #14161c;
+  color: #f2f2f2;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.fl-btn small {
+  font-size: 11px;
+  opacity: 0.8;
+}
+.fl-btn[aria-pressed='true'] {
+  outline: 3px solid var(--accent);
+  outline-offset: 1px;
+}
+.fl-eq {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+.fl-memo {
+  font-size: 17px;
+  font-weight: 700;
+}
