@@ -128,7 +128,7 @@
   {
     "slug": "color-mixing",
     "title": "混色の基本",
-    "desc": "絵の具の三原色と光の吸いこみ方から、ほしい色の作り方までをまとめました。絵の具を混ぜる体験と光を重ねる体験、炎色反応と花火(大きさ・値段の表、Canvasの打ち上げ花火)、赤と青の種類で比べる紫の作り方つきです。",
+    "desc": "絵の具の三原色と光の吸いこみ方から、ほしい色の作り方までをまとめました。絵の具を混ぜる体験と光を重ねる体験、赤と青の種類で比べる紫の作り方つきです。",
     "tags": [
       "色",
       "絵の具",
@@ -139,6 +139,22 @@
       "color-mixing/thumbs/palette.svg",
       "color-mixing/thumbs/purple.svg",
       "color-mixing/thumbs/steps.svg"
+    ]
+  },
+  {
+    "slug": "hanabi",
+    "title": "花火シミュレーター",
+    "desc": "玉の大きさ・形・色を選んで、Canvasの夜空に花火を打ち上げます。尺玉や三尺玉の高さ・開く大きさ・値段の表、何発でいくらの計算、花火の色を生む炎色反応つきです。",
+    "tags": [
+      "花火",
+      "Canvas",
+      "色"
+    ],
+    "thumbs": [
+      "hanabi/thumbs/sky.svg",
+      "hanabi/thumbs/sizes.svg",
+      "hanabi/thumbs/shapes.svg",
+      "hanabi/thumbs/flame.svg"
     ]
   }
 ]

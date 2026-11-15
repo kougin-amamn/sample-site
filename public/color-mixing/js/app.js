@@ -10,8 +10,7 @@
   var names = [],
     paints = {},
     order = [],
-    count = {},
-    lmShow = null;
+    count = {};
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -338,112 +337,7 @@
       };
       $('lmPresets').appendChild(b);
     });
-    lmShow = function (v) {
-      lm = { r: v.r, g: v.g, b: v.b };
-      draw();
-    };
     draw();
-  }
-
-  /* 炎色反応
-     炎は白い芯から金属の色へ広がるグラデーションで描く */
-  function flameSvg(hex, id, size) {
-    var s = document.createElementNS(NS, 'svg'),
-      defs = document.createElementNS(NS, 'defs'),
-      gr = document.createElementNS(NS, 'radialGradient'),
-      path = document.createElementNS(NS, 'path');
-    s.setAttribute('viewBox', '0 0 100 130');
-    s.setAttribute('width', size);
-    s.setAttribute('aria-hidden', 'true');
-    gr.id = id;
-    gr.setAttribute('cx', '50%');
-    gr.setAttribute('cy', '78%');
-    gr.setAttribute('r', '62%');
-    [
-      ['0', '#FFFFFF'],
-      ['0.22', '#FFFFFF'],
-      ['0.55', hex],
-      ['1', hex],
-    ].forEach(function (st) {
-      var e = document.createElementNS(NS, 'stop');
-      e.setAttribute('offset', st[0]);
-      e.setAttribute('stop-color', st[1]);
-      gr.appendChild(e);
-    });
-    defs.appendChild(gr);
-    path.setAttribute('d', 'M50 4C60 30 86 48 86 86A36 36 0 0 1 14 86C14 64 30 52 36 30C42 44 48 46 50 4Z');
-    path.setAttribute('fill', 'url(#' + id + ')');
-    s.append(defs, path);
-    return s;
-  }
-
-  function flame(d) {
-    $('flIntro').textContent = d.intro;
-    $('flNote').textContent = d.note;
-    var btns = [];
-    function show(i) {
-      var it = d.items[i],
-        info = $('flInfo');
-      $('flBig').textContent = '';
-      $('flBig').appendChild(flameSvg(it.hex, 'flBigG', 150));
-      info.textContent = '';
-      info.append(
-        el('b', 'fl-sym', it.sym),
-        el('h3', '', it.name),
-        el('p', 'fl-col', '炎の色: ' + it.color),
-        el('code', '', it.hex),
-        el('p', '', it.use),
-      );
-      btns.forEach(function (b, j) {
-        b.setAttribute('aria-pressed', j === i);
-      });
-    }
-    var head = document.createElement('tr');
-    ['記号', '金属', '炎の色', '花火での色', '身近な例'].forEach(function (h) {
-      head.appendChild(el('th', '', h));
-    });
-    $('flTable').appendChild(head);
-    d.items.forEach(function (it, i) {
-      var tr = document.createElement('tr'),
-        b = el('button', 'fl-btn'),
-        td = el('td'),
-        col = el('td', 'fl-colcell'),
-        sw = el('span', 'p-dot');
-      b.type = 'button';
-      b.setAttribute('aria-label', it.name + 'の炎を見る');
-      b.append(flameSvg(it.hex, 'flG' + i, 22), el('b', '', it.sym));
-      b.onclick = function () {
-        show(i);
-      };
-      btns.push(b);
-      td.appendChild(b);
-      sw.style.background = it.hex;
-      col.append(sw, it.color);
-      tr.append(td, el('td', '', it.name), col, el('td', '', it.firework), el('td', '', it.near || '—'));
-      $('flTable').appendChild(tr);
-    });
-    show(0);
-
-    var m = $('flMemo');
-    m.append(el('h4', '', d.memo.title), el('p', 'fl-memo', d.memo.text), el('p', '', d.memo.desc));
-
-    var f = d.fireworks,
-      c = $('flFire'),
-      eq = el('div', 'fl-eq'),
-      go = el('button', 'p-try');
-    f.parts.forEach(function (pt, i) {
-      if (i) eq.append(' + ');
-      eq.appendChild(chip(pt.hex, pt.name));
-    });
-    eq.append(' = ');
-    eq.appendChild(chip(f.result, '紫'));
-    go.type = 'button';
-    go.textContent = '光を重ねてみるで試す';
-    go.onclick = function () {
-      if (lmShow) lmShow(f.lm);
-      $('lightmix').scrollIntoView({ behavior: 'smooth' });
-    };
-    c.append(el('h4', '', f.title), eq, el('p', '', f.desc), go);
   }
 
   function build(d) {
@@ -545,8 +439,6 @@
     light(d.light);
     purple(d.purple);
     lightMixer(d.lightmix);
-    flame(d.flame);
-    if (window.Hanabi) Hanabi.init(d.hanabi, d.flame);
     mixer();
     document.querySelectorAll('.sec').forEach(function (s) {
       s.hidden = false;

@@ -1,0 +1,417 @@
+/* 花火シミュレーターの見た目。文字と背景のコントラスト比は 7:1 前後を目安にしている */
+:root {
+  --bg: #fbfaf7;
+  --panel: #ffffff;
+  --text: #1c1d22;
+  --sub: #555a66;
+  --line: #e2e0da;
+  --accent: #1b3a6b;
+  --accent-fg: #ffffff;
+  --ok: #0b6b3a;
+  --ng: #b3261e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15171c;
+    --panel: #1e2128;
+    --text: #f0f1f4;
+    --sub: #b4b9c4;
+    --line: #333844;
+    --accent: #9cb8ff;
+    --accent-fg: #10131a;
+    --ok: #6fd69c;
+    --ng: #ff8a80;
+  }
+}
+* {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    system-ui,
+    -apple-system,
+    'Hiragino Sans',
+    'Noto Sans JP',
+    sans-serif;
+  line-height: 1.7;
+}
+.head,
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.head {
+  padding-top: 18px;
+}
+.back {
+  color: var(--sub);
+  font-size: 13px;
+  text-decoration: none;
+}
+.back:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+.head h1 {
+  margin: 6px 0 2px;
+  font-size: 26px;
+}
+.head p {
+  margin: 0 0 10px;
+  color: var(--sub);
+}
+.toc {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 10px max(20px, calc((100vw - 1100px) / 2 + 20px));
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.toc a {
+  flex: none;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 14px;
+  text-decoration: none;
+}
+.toc a:hover,
+.toc a:focus-visible {
+  border-color: var(--accent);
+}
+.status {
+  color: var(--sub);
+}
+.sec {
+  scroll-margin-top: 64px;
+  padding: 26px 0 8px;
+  border-bottom: 1px solid var(--line);
+}
+.sec h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+.sec h3 {
+  margin: 22px 0 8px;
+  font-size: 17px;
+}
+.note {
+  color: var(--sub);
+  font-size: 14px;
+}
+.cards,
+.general {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.card {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+}
+.card h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+.card p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* 表 */
+.table-wrap {
+  overflow-x: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  font-size: 14px;
+}
+caption {
+  caption-side: bottom;
+  padding-top: 6px;
+  color: var(--sub);
+  font-size: 12px;
+  text-align: left;
+}
+th,
+td {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+thead th {
+  background: var(--bg);
+  font-size: 13px;
+}
+.types tbody th {
+  white-space: nowrap;
+}
+
+/* 色見本 */
+.w-chip {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 84px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.w-chip code {
+  font-size: 11px;
+  opacity: 0.9;
+}
+.w-chip.big {
+  min-width: 130px;
+  min-height: 84px;
+  font-size: 17px;
+}
+.w-chip.big code {
+  font-size: 13px;
+}
+
+/* ボタンと色の丸 */
+.p-try {
+  padding: 6px 14px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+}
+.p-try:hover {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+.p-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+/* 炎色反応 */
+.fl-view {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #14161c;
+  color: #f2f2f2;
+}
+.fl-big {
+  flex: none;
+}
+.fl-big svg {
+  display: block;
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.25));
+}
+.fl-info h3 {
+  margin: 2px 0 4px;
+}
+.fl-info p {
+  margin: 4px 0;
+}
+.fl-info code {
+  font-size: 12px;
+  opacity: 0.8;
+}
+.fl-sym {
+  font-size: 28px;
+}
+.fl-col {
+  font-weight: 700;
+}
+.fl-hint {
+  color: var(--sub);
+  font-size: 13px;
+}
+.fl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #14161c;
+  color: #f2f2f2;
+  font: inherit;
+  cursor: pointer;
+}
+.fl-btn[aria-pressed='true'] {
+  outline: 3px solid var(--accent);
+  outline-offset: 1px;
+}
+.fl-colcell .p-dot {
+  vertical-align: -2px;
+  margin-right: 6px;
+}
+.fl-cards {
+  margin-top: 14px;
+}
+.fl-eq {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+.fl-memo {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/* 花火の大きさと値段 */
+.hb-table td.num {
+  white-space: nowrap;
+}
+.hb-table th {
+  white-space: nowrap;
+}
+.hb-open {
+  min-width: 120px;
+  white-space: nowrap;
+}
+.hb-bar {
+  display: block;
+  height: 6px;
+  margin-top: 4px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #e8102e, #ffc21a);
+}
+.hb-like {
+  font-size: 13px;
+  min-width: 12em;
+}
+.hb-go {
+  white-space: nowrap;
+}
+.hb-calc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+}
+.hb-calc select,
+.hb-calc input {
+  font: inherit;
+  padding: 4px 6px;
+}
+.hb-calc input {
+  width: 7em;
+}
+.hb-total {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  align-items: baseline;
+}
+.hb-total b {
+  font-size: 20px;
+}
+
+/* 花火を打ち上げる */
+.ln-ctrl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.ln-ctrl select {
+  font: inherit;
+  padding: 4px 6px;
+}
+.ln-colors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ln-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.ln-color[aria-pressed='true'] {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+  font-weight: 700;
+}
+.ln-stage canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  background: #05070f;
+  cursor: pointer;
+}
+.ln-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+.ln-go {
+  padding: 8px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.fl-table th {
+  white-space: nowrap;
+}
+
+/* 花火の形 */
+.sh-table th,
+.sh-table td:nth-child(2) {
+  white-space: nowrap;
+}
+.fl-link {
+  display: inline;
+  margin: 0;
+  color: var(--sub);
+  font-size: 13px;
+}
+.ln-colors {
+  margin-bottom: 10px;
+}

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>花火シミュレーター</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="head">
+      <a class="back" href="../">← サンプル一覧</a>
+      <h1>花火シミュレーター</h1>
+      <p>玉の大きさ・形・色を選んで夜空に打ち上げながら、花火の大きさや値段、色のしくみを知るサイトです。</p>
+    </header>
+
+    <nav class="toc" aria-label="目次">
+      <a href="#sim">打ち上げる</a>
+      <a href="#shapes">花火の形</a>
+      <a href="#sizes">大きさと値段</a>
+      <a href="#flame">色のしくみ(炎色反応)</a>
+    </nav>
+
+    <main class="main">
+      <p id="status" class="status">読み込んでいます…</p>
+
+      <section id="sim" class="sec" hidden>
+        <h2>打ち上げる</h2>
+        <p id="simIntro"></p>
+        <div class="ln-ctrl">
+          <label
+            >玉の大きさ
+            <select id="lnSize"></select
+          ></label>
+          <label
+            >形
+            <select id="lnShape"></select
+          ></label>
+        </div>
+        <div id="lnColors" class="ln-colors" role="group" aria-label="花火の色"></div>
+        <div class="ln-stage">
+          <canvas id="lnCanvas" width="900" height="560" aria-label="花火を打ち上げる夜空"></canvas>
+        </div>
+        <div class="ln-btns">
+          <button id="lnGo" type="button" class="ln-go">打ち上げる</button>
+          <button id="lnAll" type="button" class="p-try">大きさを順に打ち上げる</button>
+          <button id="lnStar" type="button" class="p-try">スターマイン</button>
+        </div>
+        <p id="simNote" class="note"></p>
+      </section>
+
+      <section id="shapes" class="sec" hidden>
+        <h2>花火の形</h2>
+        <div class="table-wrap">
+          <table id="shapeTable" class="sh-table"></table>
+        </div>
+        <p id="shapeNote" class="note"></p>
+      </section>
+
+      <section id="sizes" class="sec" hidden>
+        <h2>大きさと値段</h2>
+        <p id="hbIntro"></p>
+        <div class="table-wrap">
+          <table id="hbTable" class="hb-table"></table>
+        </div>
+        <h3>何発でいくら?</h3>
+        <div class="hb-calc">
+          <label
+            >玉の大きさ
+            <select id="hbSize"></select
+          ></label>
+          <label>発数 <input id="hbCount" type="number" min="1" max="100000" inputmode="numeric" /> 発</label>
+          <output id="hbTotal" class="hb-total"></output>
+        </div>
+        <p id="hbNote" class="note"></p>
+      </section>
+
+      <section id="flame" class="sec" hidden>
+        <h2>色のしくみ(炎色反応)</h2>
+        <p id="flIntro"></p>
+        <div class="fl-view">
+          <div id="flBig" class="fl-big"></div>
+          <div id="flInfo" class="fl-info"></div>
+        </div>
+        <h3>金属と炎の色</h3>
+        <p class="fl-hint">左の記号を押すと、上の炎の色が変わります。</p>
+        <div class="table-wrap">
+          <table id="flTable" class="fl-table"></table>
+        </div>
+        <div class="cards fl-cards">
+          <div id="flMemo" class="card"></div>
+          <div id="flFire" class="card"></div>
+        </div>
+        <p id="flNote" class="note"></p>
+      </section>
+    </main>
+
+    <script src="js/sky.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
