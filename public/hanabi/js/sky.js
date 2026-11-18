@@ -76,6 +76,8 @@
             grav: o.grav,
             tail: o.tail || 0,
             child: o.child || null,
+            hist: o.hist ? [] : null,
+            histMax: o.hist || 0,
           });
         });
       }
@@ -93,6 +95,17 @@
         ring(x, y, r * 0.3, cols, { n: Math.round(n * 0.35), life: 90, w: w * 0.9, grav: 0.02 });
       } else if (shape === 'kamuro')
         ring(x, y, r * 0.9, GOLD, { n: n, life: 210, w: w * 0.7, grav: 0.045, tail: 14, drag: 0.955 });
+      /* 柳: 広がりを小さくし、重さと抵抗を大きくして、細く長い尾がまっすぐ垂れるようにする */ else if (
+        shape === 'yanagi'
+      )
+        ring(x, y, r * 0.62, cols, {
+          n: Math.round(n * 0.7),
+          life: 240,
+          w: w * 0.55,
+          grav: 0.03,
+          drag: 0.958,
+          hist: 60,
+        });
       else if (shape === 'senrin')
         ring(x, y, r * 0.55, ['#FFE7B0'], {
           n: Math.max(10, Math.round(n / 7)),
@@ -150,6 +163,25 @@
             return Math.round(v + (255 - v) * wht);
           }),
           col = 'rgba(' + c.join(',') + ',' + (0.9 * k).toFixed(3) + ')';
+        if (p.hist) {
+          /* 2コマに1回だけ記録して、根元から先までの長い跡を軽く残す */
+          if (p.age % 2 === 1 || !p.hist.length) p.hist.push(p.x, p.y);
+          if (p.hist.length > p.histMax * 2) p.hist.splice(0, 2);
+          /* 古い位置ほど薄くなるように、3つに分けて描く */
+          var hl = p.hist.length / 2,
+            part = Math.ceil(hl / 3);
+          g.lineWidth = p.w;
+          for (var q = 0; q < 3; q++) {
+            var from = q * part,
+              to = Math.min(hl - 1, (q + 1) * part);
+            if (to <= from) continue;
+            g.strokeStyle = 'rgba(' + c.join(',') + ',' + (0.25 * (q + 1) * k).toFixed(3) + ')';
+            g.beginPath();
+            g.moveTo(p.hist[from * 2], p.hist[from * 2 + 1]);
+            for (var j = from + 1; j <= to; j++) g.lineTo(p.hist[j * 2], p.hist[j * 2 + 1]);
+            g.stroke();
+          }
+        }
         if (p.tail) {
           g.strokeStyle = col;
           g.lineWidth = p.w;
