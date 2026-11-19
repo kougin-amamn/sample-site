@@ -2,10 +2,9 @@
    花火の描画は sky.js(HanabiSky)を使う */
 (function () {
   'use strict';
-  var NS = 'http://www.w3.org/2000/svg',
-    $ = function (id) {
-      return document.getElementById(id);
-    };
+  var $ = function (id) {
+    return document.getElementById(id);
+  };
   var sky = null,
     colors = [],
     state = { size: 4, shape: 'kiku', color: 'Sr' },
@@ -250,46 +249,23 @@
   }
 
   /* 炎色反応
-     炎は白い芯から金属の色へ広がるグラデーションで描く */
-  function flameSvg(hex, id, size) {
-    var s = document.createElementNS(NS, 'svg'),
-      defs = document.createElementNS(NS, 'defs'),
-      gr = document.createElementNS(NS, 'radialGradient'),
-      path = document.createElementNS(NS, 'path');
-    s.setAttribute('viewBox', '0 0 100 130');
-    s.setAttribute('width', size);
-    s.setAttribute('aria-hidden', 'true');
-    gr.id = id;
-    gr.setAttribute('cx', '50%');
-    gr.setAttribute('cy', '78%');
-    gr.setAttribute('r', '62%');
-    [
-      ['0', '#FFFFFF'],
-      ['0.22', '#FFFFFF'],
-      ['0.55', hex],
-      ['1', hex],
-    ].forEach(function (st) {
-      var e = document.createElementNS(NS, 'stop');
-      e.setAttribute('offset', st[0]);
-      e.setAttribute('stop-color', st[1]);
-      gr.appendChild(e);
-    });
-    defs.appendChild(gr);
-    path.setAttribute('d', 'M50 4C60 30 86 48 86 86A36 36 0 0 1 14 86C14 64 30 52 36 30C42 44 48 46 50 4Z');
-    path.setAttribute('fill', 'url(#' + id + ')');
-    s.append(defs, path);
-    return s;
+     大きな炎は flame.js(FlameView)で動かし、表の記号には金属の色に光る丸をつける */
+  function glow(hex) {
+    var d = el('span', 'fl-dot');
+    d.style.background = 'radial-gradient(circle, #fff 0 18%, ' + hex + ' 55%)';
+    d.style.boxShadow = '0 0 8px 1px ' + hex;
+    return d;
   }
 
   function flame(d) {
     $('flIntro').textContent = d.intro;
     $('flNote').textContent = d.note;
-    var btns = [];
+    var btns = [],
+      fv = FlameView($('flCanvas'));
     function show(i) {
       var it = d.items[i],
         info = $('flInfo');
-      $('flBig').textContent = '';
-      $('flBig').appendChild(flameSvg(it.hex, 'flBigG', 150));
+      fv.setColor(it.hex);
       info.textContent = '';
       info.append(
         el('b', 'fl-sym', it.sym),
@@ -315,7 +291,7 @@
         sw = el('span', 'p-dot');
       b.type = 'button';
       b.setAttribute('aria-label', it.name + 'の炎を見る');
-      b.append(flameSvg(it.hex, 'flG' + i, 22), el('b', '', it.sym));
+      b.append(glow(it.hex), el('b', '', it.sym));
       b.onclick = function () {
         show(i);
       };

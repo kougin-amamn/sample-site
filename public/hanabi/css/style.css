@@ -215,19 +215,26 @@ thead th {
 /* 炎色反応 */
 .fl-view {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 20px;
   padding: 16px;
   border-radius: 14px;
-  background: #14161c;
+  background: #0d0f15;
   color: #f2f2f2;
 }
 .fl-big {
   flex: none;
 }
-.fl-big svg {
+.fl-big canvas {
   display: block;
-  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.25));
+  border-radius: 10px;
+}
+.fl-dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
 }
 .fl-info h3 {
   margin: 2px 0 4px;
